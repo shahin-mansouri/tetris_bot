@@ -1,8 +1,8 @@
 from django .urls import path
-from .views import *
+from .views import tetris_play
 
 
 urlpatterns = [
-    path('lunch-game/', tetris, name='lunch_game')
+    path('lunch-game/', tetris_play, name='lunch_game')
 ]
 
