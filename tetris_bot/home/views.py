@@ -8,7 +8,8 @@ def home(request):
     # اگر کاربر وارد شده باشد، فقط صفحه را نمایش می‌دهیم
     if request.user.is_authenticated:
         context = dict()
-        context['coins'] = Coin.objects.get(user=request.user)
+        coins, create = Coin.objects.get_or_create(user=request.user)
+        context['coins'] = coins
         return render(request, 'home/home.html', context=context)
     
     # دریافت داده‌ها از URL (query parameters)
@@ -48,3 +49,20 @@ def home(request):
 
     # انتقال به صفحه دیگری پس از ذخیره موفقیت‌آمیز
     return render(request, 'home/home.html')
+
+
+from datetime import timedelta
+from django.utils.timezone import now
+from django.http import JsonResponse
+def coin_day(request, day):
+    if request.method == 'POST':
+        user = request.user
+        coins = Coin.objects.get(user=user)
+        if coins.is_valid():
+            coins.coin_amount = 2**(day-1)
+            coins.day += 1
+            coins.next_day_time = now() + timedelta(days=1)
+            return JsonResponse({'success': True, 'message': f'The coin increased.'})
+        return JsonResponse({'success': False, 'message': f'Try the next day.'}, status=400)
+    return JsonResponse({'success': False, 'message': f'Application must be by post only.'}, status=405)
+        

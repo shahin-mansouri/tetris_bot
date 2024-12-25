@@ -21,4 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('game/', include('tetris.urls')),
     path('home/', include('home.urls')),
+    path('telegram/', include('telegram_bot.urls')),
+    path('invition/', include('invition.urls')),
+    path('verify_token/', include('verify_token.urls')),
 ]

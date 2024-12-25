@@ -32,6 +32,9 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok-free.app']
 # Application definition
 
 INSTALLED_APPS = [
+    'verify_token.apps.VerifyTokenConfig',
+    'invition.apps.InvitionConfig',
+    'telegram_bot.apps.TelegramBotConfig',
     'accounts.apps.AccountsConfig',
     'home.apps.HomeConfig',
     'tetris.apps.TetrisConfig',
@@ -81,8 +84,18 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    },
+    'telegram_bot': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'airdropbot',
+        'USER': 'airdropBot',
+        'PASSWORD': 'AA11aa11',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    },
 }
+DATABASE_ROUTERS = ['tetris_bot.db_router.TelegramBotRouter']
+
 
 
 # Password validation

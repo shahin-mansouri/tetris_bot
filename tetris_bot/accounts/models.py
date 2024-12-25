@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.hashers import make_password
+# from django.contrib.auth.hashers import make_password
 
 
 class TelegramUser(AbstractUser):
@@ -8,10 +8,11 @@ class TelegramUser(AbstractUser):
     username    = models.CharField(max_length=50, unique=True)
     first_name  = models.CharField(max_length=50)
     last_name   = models.CharField(max_length=50)
-    password    = models.CharField(
-                                   max_length=128,
-                                   default=make_password("defaultpassword")  # پسورد هش شده
-                                        )
+    invite_code = models.CharField(max_length=50, null=True)
+    # password    = models.CharField(
+    #                                max_length=128,
+    #                                default=make_password("defaultpassword")  # پسورد هش شده
+    #                                     )
 
     # Adding related_name to prevent reverse accessor clash
     groups = models.ManyToManyField(

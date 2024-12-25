@@ -35,11 +35,11 @@
                 <a href="user-info.html">
                     <img src="{% static 'home/images/avt/avt2.jpg' %}" alt="img" class="avt">
                 </a>
-                <div class="search-box box-input-field style-2">
+                {% comment %} <div class="search-box box-input-field style-2">
                     <a href="home-search.html" class="icon-search"></a>
                     <input type="text" placeholder="Search in Tetra.Bot" required class="clear-ip">
                     <i class="icon-close"></i>
-                </div>
+                </div> {% endcomment %}
             </div>
             <div class="d-flex align-items-center gap-8">
                 <a href="list-blog.html" class="icon-gift"></a>
@@ -751,13 +751,13 @@
                     <div class="menubar-footer footer-fixed">
                         <ul class="inner-bar">
                             <li class="active">
-                                <a href="home.html">
+                                <a href="{{home}}">
                                     <i class="icon icon-home2"></i>
                                     Home
                                 </a>
                             </li>
                             <li>
-                                <a href="exchange-market.html">
+                                <a href="{% url 'lunch_game' %}">
                                     <svg width="27px" height="27px" viewBox="0 0 48 48" id="b" xmlns="http://www.w3.org/2000/svg" fill="#000000">
                                         <!-- SVG content -->
                                     </svg>
@@ -765,7 +765,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="earn.html">
+                                <a href="{% url 'invition' %}">
                                     <svg width="27px" height="27px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <!-- SVG content -->
                                     </svg>

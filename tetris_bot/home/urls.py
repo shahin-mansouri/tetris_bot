@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import home
+from .views import home, coin_day
 
 
 urlpatterns = [
-    path("", home, name="home")
+    path("", home, name="home"),
+    path('coin-increase/<int:day>/', coin_day, name='coin_increase'),
 ]
