@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, viewport-fit=cover">
+    <!-- font -->
+    <link rel="stylesheet" href="{% static 'home/fonts/fonts.css' %} ">
+    <!-- Icons -->
+    <link rel="stylesheet" href="{% static 'home/fonts/font-icons.css' %} ">
+    <link rel="stylesheet" href="{% static 'home/css/bootstrap.min.css' %} ">
+    <link rel="stylesheet"type="text/css" href="{% static 'home/css/styles.css' %}"/>
+
+   
+    <!-- Favicon and Touch Icons  -->
+    <link rel="shortcut icon" href="{% static 'home/images/logo/48.png ' %}"/>
+    <link rel="apple-touch-icon-precomposed" href="{% static 'home/images/logo/48.png ' %}"/>
+
+    <title>blog</title>
+</head>
+
+<body>
+
+    <div class="header fixed-top bg-surface d-flex justify-content-center align-items-center">
+        <a href="javascript:void(0);" class="left back-btn"><i class="icon-left-btn"></i></a>
+        <h3>Hot News</h3>
+    </div>
+    <div class="pt-45 pb-16">
+        <div class="tf-container">
+            <ul class="mt-12 grid-2 gap-16">
+                {% for blog in blogs %}
+                    <li>
+                        <a class="blog-item">
+                            <img src="{{ blog.image.url }}" alt="img">
+                            <div class="content">
+                                <p class="text-xsmall text-secondary title">
+                                    {{ blog.author }} &#8226; {{ blog.date|date:"M d, Y" }}
+                                </p>
+                                <p class="mt-4">{{ blog.description }}</p>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                {% comment %} <li>
+                    <a class="blog-item">
+                        <img src="{% static 'home/images/blog/blog2.jpg' %}" alt="img">
+                        <div class="content">
+                            <p class="text-xsmall text-secondary title">Jane Cooper &#8226; May 19, 2023 </p>
+                            <p class="mt-4">The Crypto.com App Introduces Trusted Device Management</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a class="blog-item">
+                        <img src="{% static 'home/images/blog/blog3.jpg' %}" alt="img">
+                        <div class="content">
+                            <p class="text-xsmall text-secondary title">Wade Warren &#8226; June 9, 2023 </p>
+                            <p class="mt-4">Cybersecurity Predictions 2023 – How did we do?</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a class="blog-item">
+                        <img src="{% static 'home/images/blog/blog4.jpg' %}" alt="img">
+                        <div class="content">
+                            <p class="text-xsmall text-secondary title">Esther Howard &#8226; Jan 27, 2023 </p>
+                            <p class="mt-4">Cryptocurrency News: Building in Resiliency and International Co-Operation</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a class="blog-item">
+                        <img src="{% static 'home/images/blog/blog5.jpg' %}" alt="img">
+                        <div class="content">
+                            <p class="text-xsmall text-secondary title">Leslie Alex &#8226; Apr 19, 2023 </p>
+                            <p class="mt-4">Blockchain, cryptocurrencies, and mining</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a class="blog-item">
+                        <img src="{% static 'home/images/blog/blog6.jpg' %}" alt="img">
+                        <div class="content">
+                            <p class="text-xsmall text-secondary title">Jenny Wilson &#8226; May 21, 2023 </p>
+                            <p class="mt-4">Security Predictions 2023: how are we doing so far?</p>
+                        </div>
+                    </a>
+                </li> {% endcomment %}
+                
+            </ul>
+            
+        </div>
+    </div>
+
+    <div class="modal fade action-sheet" id="filter">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Filters</span>
+                    <span class="icon-cancel" data-bs-dismiss="modal"></span>
+                </div>
+                <div class="modal-body">
+                    <div class="text-small text-white">Time</div>
+                    <ul class="grid-2 rcg-12-16 mt-16">
+                        <li><a href="javascript:void(0);" class="tf-btn xs line active text-secondary item-time">All</a></li>
+                        <li><a href="javascript:void(0);" class="tf-btn xs line text-secondary item-time">1 Hour</a></li>
+                        <li><a href="javascript:void(0);" class="tf-btn xs line text-secondary item-time">24 Hour</a></li>
+                        <li><a href="javascript:void(0);" class="tf-btn xs line text-secondary item-time">This week</a></li>
+                        <li><a href="javascript:void(0);" class="tf-btn xs line text-secondary item-time">This Month</a></li>
+                        <li><a href="javascript:void(0);" class="tf-btn xs line text-secondary item-time">NFT</a></li>
+                    </ul>
+                    <div class="text-small text-white mt-16">Categories</div>
+                    <ul class="grid-2 rcg-12-16 mt-16">
+                        <li><a href="javascript:void(0);" class="tf-btn xs line active text-secondary item-category">All</a></li>
+                        <li><a href="javascript:void(0);" class="tf-btn xs line text-secondary item-category">Bitcoin</a></li>
+                        <li><a href="javascript:void(0);" class="tf-btn xs line text-secondary item-category">ETH</a></li>
+                        <li><a href="javascript:void(0);" class="tf-btn xs line text-secondary item-category">NFT</a></li>
+                        <li><a href="javascript:void(0);" class="tf-btn xs line text-secondary item-category">Crypto</a></li>
+                        <li><a href="javascript:void(0);" class="tf-btn xs line text-secondary item-category">NFT</a></li>
+                    </ul>
+                    <div class="mt-16 pt-16 line-t grid-2 gap-16">
+                        <a href="javascript:void(0);" class="tf-btn sm secondary fw-4" data-bs-dismiss="modal">Reset</a>
+                        <a href="javascript:void(0);" class="tf-btn sm primary fw-4" data-bs-dismiss="modal">Apply</a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+
+    <script type="text/javascript" src="{% static 'home/js/bootstrap.min.js' %} "></script>
+    <script type="text/javascript" src="{% static 'home/js/jquery.min.js' %} "></script>
+    <script type="text/javascript" src="{% static 'home/js/main.js' %} "></script>
+
+    
+</body>
+
+</html>

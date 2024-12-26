@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_filters %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -91,21 +92,30 @@
                 <div class="tab-content mt-16 mb-16">
                     <div class="tab-pane fade show active" id="cryptocurrency" role="tabpanel">
                         <ul>
-                            <li>
-                                <a href="choose-payment.html" class="coin-item style-2 gap-12">
-                                    <img src="{% static 'home/images/coin/coin-6.jpg' %}" alt="img" class="img">
-                                    <div class="content">
-                                        <div class="title">
-                                            <p class="mb-4 text-button">ETH</p>
+                            
+                            {% for invite in invitees5 %}
+                            {% with invite.coin_amount|percentage_difference:current_user.coin_amount as diff %}
+                                <li class="mt-16">
+                                    <a href="choose-payment.html" class="coin-item style-2 gap-12">
+                                        <img src="{% static 'home/images/coin/coin-6.jpg' %}" alt="img" class="img">
+                                        <div class="content">
+                                            <div class="title">
+                                                <p class="mb-4 text-button">{{ invite.user.first_name }} {{ invite.user.last_name }}</p>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-12">
+                                                <span class="text-small">{{ invite.coin_amount }}</span>
+                                                <span class="coin-btn {% if diff < 0 %}decrease{% else %}increase{% endif %}">
+                                                    {{ diff }}%
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div class="d-flex align-items-center gap-12">
-                                            <span class="text-small">$1.878,80</span>
-                                            <span class="coin-btn decrease">-1,62%</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="mt-16">
+                                    </a>
+                                </li>
+                            {% endwith %}
+                        {% endfor %}
+                        
+                        
+                            {% comment %} <li class="mt-16">
                                 <a href="choose-payment.html" class="coin-item style-2 gap-12">
                                     <img src="{% static 'home/images/coin/coin-7.jpg' %}" alt="img" class="img">
                                     <div class="content">
@@ -174,7 +184,7 @@
                                         </div>
                                     </div>
                                 </a>
-                            </li>
+                            </li> {% endcomment %}
                         </ul>  
                     </div>
                 </div>
@@ -203,9 +213,9 @@
                 </a>
             </li>
             <li>
-                <a href="wallet.html">
+                <a href="{% url 'profile' %}">
                     <i class="icon icon-wallet"></i>
-                    Wallet
+                    Profile
                 </a>
             </li>
         </ul>

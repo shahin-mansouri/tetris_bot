@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.contrib.auth import login
 from accounts.models import TelegramUser
 from .models import Coin
+from notifications.models import Notification
+
 
 def home(request):
     # اگر کاربر وارد شده باشد، فقط صفحه را نمایش می‌دهیم
@@ -11,7 +13,9 @@ def home(request):
         coins, create = Coin.objects.get_or_create(user=request.user)
         context['coins'] = coins
         context['day'] = coins.day
-        context['next_day'] = coins.is_valid()
+        if coins.next_day_time is not None:
+            context['next_day'] = coins.is_valid()
+        context['notifications'] = Notification.objects.all()
         return render(request, 'home/home.html', context=context)
     return HttpResponse("خطا: تمام فیلدها باید پر شوند.", status=400)
     # # دریافت داده‌ها از URL (query parameters)

@@ -32,6 +32,8 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok-free.app']
 # Application definition
 
 INSTALLED_APPS = [
+    'notifications.apps.NotificationsConfig',
+    'awards.apps.AwardsConfig',
     'verify_token.apps.VerifyTokenConfig',
     'invition.apps.InvitionConfig',
     'telegram_bot.apps.TelegramBotConfig',
@@ -141,3 +143,10 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+import os
+
+MEDIA_URL = '/media/' 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
+

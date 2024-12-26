@@ -32,16 +32,17 @@
 
     <div class="header-style2 fixed-top bg-menuDark">
         <div class="d-flex justify-content-between align-items-center">
-            <a class="box-account" href="user-info.html">
+            <a class="box-account" href="{% url 'profile' %}">
                 <img src="{% static 'home/images/avt/avt2.jpg' %} " alt="img" class="avt">
                 <div class="info">
                     <p class="text-xsmall text-secondary">Welcome back!</p>
-                    <h5 class="mt-4">Tony Nguyen</h5>
+                    {% comment %} <h5 class="mt-4">Tony Nguyen</h5> {% endcomment %}
+                    <h5 class="mt-4">{{user.first_name}}</h5>
 
                 </div>
             </a>
             <div class="d-flex align-items-center gap-8">
-                <a href="list-blog.html" class="icon-gift"></a>
+                <a href="{% url 'awards' %}" class="icon-gift"></a>
                 <a href="#notification" class="icon-noti box-noti" data-bs-toggle="modal"></a>
             </div>
         </div>
@@ -59,13 +60,17 @@
                     <a href="#recipient" data-bs-toggle="modal" class="text-secondary">View All</a>
                 </div>
                 <ul class="mt-16 grid-5 gap-12">
+                    
+                    {% for invite in invitees %}
                     <li>
                         <a href="choose-payment.html" class="tf-list-item d-flex flex-column gap-4 align-items-center">
                             <img src="{% static 'home/images/avt/avt3.jpg' %} " alt="img" class="box-round">
-                            <p class="text-center">Jane Cooper</p>
+                            <p class="text-center">{{invite.user.first_name}}</p>
                         </a>
                     </li>
-                    <li>
+                    {% endfor %}
+
+                    {% comment %} <li>
                         <a href="choose-payment.html" class="tf-list-item d-flex flex-column gap-8 align-items-center">
                             <img src="{% static 'home/images/avt/avt4.jpg' %} " alt="img" class="box-round">
                             <p class="text-center">Wade Warren</p>
@@ -89,7 +94,7 @@
                             <img src="{% static 'home/images/avt/avt7.jpg' %} " alt="img" class="box-round">
                             <p class="text-center">Robert Fox</p>
                         </a>
-                    </li>
+                    </li> {% endcomment %}
                 </ul>
             </div>
         </div>
@@ -340,13 +345,18 @@
                 <div class="overflow-auto pt-45 pb-16">
                     <div class="tf-container">
                         <ul class="mt-12 grid-4 rg-16 cg-25">
+                            
+                            {% for invite in invitees %}
+                                
+                            
                             <li>
                                 <a href="choose-payment.html" class="tf-list-item d-flex flex-column gap-4 align-items-center">
                                     <img src="{% static 'home/images/avt/avt7.jpg' %} " alt="img" class="box-round">
-                                    <p class="text-center">Jane Cooper</p>
+                                    <p class="text-center">{{invite.user.first_name}}</p>
                                 </a>
                             </li>
-                            <li>
+                            {% endfor %}
+                            {% comment %} <li>
                                 <a href="choose-payment.html" class="tf-list-item d-flex flex-column gap-4 align-items-center">
                                     <img src="{% static 'home/images/avt/avt8.jpg' %} " alt="img" class="box-round">
                                     <p class="text-center">Wade Warren</p>
@@ -484,7 +494,7 @@
                                     <img src="{% static 'home/images/avt/avt28.jpg' %} " alt="img" class="box-round">
                                     <p class="text-center">Savan Nguyen</p>
                                 </a>
-                            </li>
+                            </li> {% endcomment %}
                         </ul>
                     </div>
                 </div>
@@ -503,16 +513,24 @@
                 <div class="overflow-auto pt-45 pb-16">
                     <div class="tf-container">
                         <ul class="mt-12">
-                            <li>
-                                <a href="#" class="noti-item bg-menuDark">
-                                    <div class="pb-8 line-bt d-flex">
-                                        <p class="text-button fw-6">Cointex to just tick size and trading amount precision of spots/margins and perpetual swaps</p>
-                                        <i class="dot-lg bg-primary"></i>
-                                    </div>
-                                    <span class="d-block mt-8">5 minutes ago</span>
-                                </a>
-                            </li>
-                            <li class="mt-12">
+                            {% for notification in notifications %}
+                                <li>
+                                    <a href="#" class="noti-item bg-menuDark">
+                                        <div class="pb-8 line-bt d-flex">
+                                            <p class="text-button fw-6">{{ notification.description }}</p>
+                                            <i class="dot-lg bg-primary"></i>
+                                        </div>
+                                        <span class="d-block mt-8">
+                                            <time class="notification-time" datetime="{{ notification.timestamp|date:'c' }}">
+                                                {{ notification.get_time_ago }}
+                                            </time>
+                                        </span>
+                                    </a>
+                                </li>
+                            {% empty %}
+                                <li>No notifications available.</li>
+                            {% endfor %}
+                            {% comment %} <li class="mt-12">
                                 <a href="#" class="noti-item bg-menuDark">
                                     <div class="pb-8 line-bt d-flex">
                                         <p class="text-button fw-6">Cointex to adjust components of several indexes</p>
@@ -553,7 +571,7 @@
                                     </div>
                                     <span class="d-block mt-8 text-secondary">1 day ago</span>
                                 </a>
-                            </li>
+                            </li> {% endcomment %}
                         </ul>
                     </div>
                 </div>
