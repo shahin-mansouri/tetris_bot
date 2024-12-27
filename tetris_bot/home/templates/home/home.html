@@ -142,32 +142,32 @@
 <div class="bg-menuDark tf-container">
     <div class="pt-12 pb-12 mt-4">
         <h5><span class="text-primary">Receive Daily Coin</span></h5>
-        <ul class="mt-16 grid-4 m--16">
-            <li>
-                <a href="#" class="tf-list-item d-flex flex-column gap-8 align-items-center" id="day1-btn">
-                    <span class="box-round bg-surface d-flex justify-content-center align-items-center" id="day1-label">1K</span>
-                    Day 1
-                </a>
-            </li>
-            <li>
-                <a href="#" class="tf-list-item d-flex flex-column gap-8 align-items-center disabled" id="day2-btn">
-                    <span class="box-round bg-surface d-flex justify-content-center align-items-center" id="day2-label">2K</span>
-                    Day 2
-                </a>
-            </li>
-            <li>
-                <a href="#" class="tf-list-item d-flex flex-column gap-8 align-items-center disabled" id="day3-btn">
-                    <span class="box-round bg-surface d-flex justify-content-center align-items-center" id="day3-label">4K</span>
-                    Day 3
-                </a>
-            </li>
-            <li>
-                <a href="#" class="tf-list-item d-flex flex-column gap-8 align-items-center disabled" id="day4-btn">
-                    <span class="box-round bg-surface d-flex justify-content-center align-items-center" id="day4-label">8K</span>
-                    Day 4
-                </a>
-            </li>
-        </ul>
+        <ul class="mt-16 grid-4 m--16"> 
+            <li> 
+                <a href="#" class="tf-list-item d-flex flex-column gap-8 align-items-center" id="day1-btn" onclick="addCoins(1)"> 
+                    <span class="box-round bg-surface d-flex justify-content-center align-items-center">1K</span> 
+                    Day 1 
+                </a> 
+            </li> 
+            <li> 
+                <a href="#" class="tf-list-item d-flex flex-column gap-8 align-items-center disabled" id="day2-btn" onclick="addCoins(2)"> 
+                    <span class="box-round bg-surface d-flex justify-content-center align-items-center">2K</span> 
+                    Day 2 
+                </a> 
+            </li> 
+            <li> 
+                <a href="#" class="tf-list-item d-flex flex-column gap-8 align-items-center disabled" id="day3-btn" onclick="addCoins(3)"> 
+                    <span class="box-round bg-surface d-flex justify-content-center align-items-center">4K</span> 
+                    Day 3 
+                </a> 
+            </li> 
+            <li> 
+                <a href="#" class="tf-list-item d-flex flex-column gap-8 align-items-center disabled" id="day4-btn" onclick="addCoins(4)"> 
+                    <span class="box-round bg-surface d-flex justify-content-center align-items-center">8K</span> 
+                    Day 4 
+                </a> 
+            </li> 
+        </ul>        
     </div>
 </div>
 
@@ -879,6 +879,79 @@
         </div>
     </div>
 </div>
+
+<script>
+// دریافت CSRF توکن برای ارسال درخواست POST
+function getCSRFToken() {
+    const name = 'csrftoken';
+    const cookies = document.cookie.split('; ');
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].split('=');
+        if (cookie[0] === name) {
+            return cookie[1];
+        }
+    }
+    return '';
+}
+
+// به‌روزرسانی وضعیت دکمه‌ها (فعال / غیرفعال)
+function updateDayButtons(currentDay, nextDayTime) {
+    const allButtons = document.querySelectorAll('.tf-list-item');
+    const now = new Date();
+    const nextDayDate = new Date(nextDayTime);
+
+    allButtons.forEach((button, index) => {
+        const day = index + 1;
+
+        // اگر روز بیشتر از روز فعلی است یا هنوز زمان انتظار تمام نشده
+        if (day > currentDay || now < nextDayDate) {
+            button.classList.add('disabled'); // غیرفعال کردن دکمه
+            button.setAttribute('href', '#'); // غیرفعال کردن لینک
+            button.onclick = null; // غیرفعال کردن رویداد کلیک
+        } else {
+            button.classList.remove('disabled'); // فعال کردن دکمه
+            button.setAttribute('href', '#'); // لینک همچنان غیرقابل کلیک است (اگر نیاز به لینک داشتید، این خط را حذف کنید)
+            button.onclick = function() {
+                addCoins(day); // فراخوانی تابع اضافه کردن سکه
+            };
+        }
+    });
+}
+
+// اضافه کردن سکه‌ها با ارسال درخواست به سرور
+function addCoins(day) {
+    fetch(`/home/coin-increase/${day}/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCSRFToken(),
+        },
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                // به‌روزرسانی مقدار سکه‌ها در صفحه
+                document.querySelector('h1 a').textContent = data.coin_amount;
+                updateDayButtons(data.current_day, data.next_day_time); // به‌روزرسانی وضعیت دکمه‌ها
+            } else {
+                updateDayButtons(data.current_day, data.next_day_time); // به‌روزرسانی وضعیت دکمه‌ها در صورت خطا
+            }
+        })
+        .catch((error) => console.error('Error:', error));
+}
+
+// بارگذاری اولیه برای به‌روزرسانی دکمه‌ها
+document.addEventListener('DOMContentLoaded', () => {
+    // بارگذاری وضعیت فعلی از سرور
+    fetch('/home/coin-day-status/')
+        .then((response) => response.json())
+        .then((data) => {
+            updateDayButtons(data.current_day, data.next_day_time); // به‌روزرسانی وضعیت دکمه‌ها
+        })
+        .catch((error) => console.error('Error:', error));
+});
+
+</script>
 
 <!-- Scripts -->
 <script type="text/javascript" src="{% static 'home/js/bootstrap.min.js' %}"></script>

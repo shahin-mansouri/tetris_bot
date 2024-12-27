@@ -65,11 +65,33 @@ def coin_day(request, day):
         user = request.user
         coins = Coin.objects.get(user=user)
         if coins.is_valid():
-            coins.coin_amount = 2**(day-1)
+            coins.coin_amount += (2**(day-1))*1000
             coins.day += 1
             coins.next_day_time = now() + timedelta(days=1)
-            return JsonResponse({'success': True, 'message': f'The coin increased.'})
-        return JsonResponse({'success': False, 'message': f'Try the next day.'}, status=400)
+            coins.save()
+            print('asdfasdfs')
+            return JsonResponse({'success': True, 'message': f'The coin increased.', 'coin_amount': coins.coin_amount, 'current_day': coins.day, 'next_day_time': coins.next_day_time})
+        return JsonResponse({'success': False, 'message': f'Try the next day.', 'coin_amount': coins.coin_amount}, status=400)
     return JsonResponse({'success': False, 'message': f'Application must be by post only.'}, status=405)
         
 
+def coin_day_status(request):
+    # if request.method == 'POST':
+    user = request.user
+    coins = Coin.objects.get(user=user)
+    return JsonResponse({'current_day': coins.day, 'next_day_time': coins.next_day_time })
+    # return JsonResponse({'error':  f'Application must be by post only.'}, status=405)
+
+# from django.utils.timezone import now, timedelta
+# def coin_day(request, day):
+#     if request.method == 'POST':
+#         user = request.user
+#         coins = Coin.objects.get(user=user)
+#         if coins.is_valid():
+#             coins.coin_amount += (2**(day-1)) * 1000
+#             coins.day = day
+#             coins.next_day_time = now() + timedelta(days=1)
+#             coins.save()
+#             return JsonResponse({'success': True, 'message': f'The coin increased.', 'coin_amount': coins.coin_amount})
+#         return JsonResponse({'success': False, 'message': f'Try the next day.', 'coin_amount': coins.coin_amount}, status=400)
+#     return JsonResponse({'success': False, 'message': f'Application must be by POST only.', 'coin_amount': coins.coin_amount}, status=405)

@@ -1,12 +1,15 @@
 from django.db import models
 from django.utils import timezone
+from accounts.models import TelegramUser
 
 
 class Notification(models.Model):
+    user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE, related_name='notifications_user')
     title = models.CharField(max_length=255)
     description = models.TextField()
     timestamp = models.DateTimeField(default=timezone.now, editable=False)
     is_read = models.BooleanField(default=False)
+    sent_to_all = models.BooleanField(default=True)
 
     def __str__(self):
         return self.title
