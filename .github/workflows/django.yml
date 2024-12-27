@@ -27,4 +27,4 @@ jobs:
         pip install -r requirment.txt
     - name: Run Tests
       run: |
-        python ../manage.py test
+        python /home/runner/work/tetris_bot/manage.py test
