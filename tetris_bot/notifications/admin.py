@@ -1,44 +1,28 @@
+# myapp/admin.py
 from django.contrib import admin
-from django.utils.html import format_html
-from .models import Notification
+from .models import Notification, UserNotification
 
 class NotificationAdmin(admin.ModelAdmin):
-    list_display = ('title', 'description', 'timestamp', 'is_read', 'get_time_ago', 'view_on_site')
-    
-    list_filter = ('is_read', 'timestamp', 'title')
-
+    list_display = ('title', 'timestamp', 'get_time_ago')
     search_fields = ('title', 'description')
-
-    list_editable = ('is_read',)
+    list_filter = ('timestamp',)
 
     def get_time_ago(self, obj):
         return obj.get_time_ago()
     get_time_ago.short_description = 'Time Ago'
 
-    def view_on_site(self, obj):
-        return format_html('<a href="/notifications/{}/" target="_blank">View</a>', obj.id)
-    view_on_site.short_description = 'View On Site'
+class UserNotificationAdmin(admin.ModelAdmin):
+    list_display = ('user', 'notification', 'is_read', 'read_at', 'notification_time')
+    search_fields = ('user__username', 'user__email', 'notification__title', 'notification__description')
+    list_filter = ('is_read', 'read_at', 'notification__timestamp', 'user__date_joined', 'user__is_active')
+    raw_id_fields = ('user', 'notification')
+    date_hierarchy = 'read_at'
+    ordering = ('-read_at',)
 
-    fieldsets = (
-        (None, {
-            'fields': ('title', 'description', 'is_read')
-        }),
+    def notification_time(self, obj):
+        return obj.notification.timestamp
+    notification_time.short_description = 'Notification Time'
+    notification_time.admin_order_field = 'notification__timestamp'
 
-    )
-
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        if request.user.is_superuser:
-            return qs
-        return qs.filter(is_read=False)
-    
-    def description_preview(self, obj):
-        return f"{obj.description[:50]}..." if len(obj.description) > 50 else obj.description
-    description_preview.short_description = 'Description Preview'
-
-    class Media:
-        css = {
-            'all': ('notifications/css/admin.css',)
-        }
-        js = ('notifications/js/admin.js',)
 admin.site.register(Notification, NotificationAdmin)
+admin.site.register(UserNotification, UserNotificationAdmin)

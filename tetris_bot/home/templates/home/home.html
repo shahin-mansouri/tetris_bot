@@ -144,187 +144,194 @@
         <h5><span class="text-primary">Receive Daily Coin</span></h5>
         <ul class="mt-16 grid-4 m--16"> 
             <li> 
-                <a href="#" class="tf-list-item d-flex flex-column gap-8 align-items-center" id="day1-btn" onclick="addCoins(1)"> 
+                <a href="#" class="tf-list-item d-flex flex-column gap-8 align-items-center disabled" id="day1-btn" onclick="handleDayClick(0)"> 
                     <span class="box-round bg-surface d-flex justify-content-center align-items-center">1K</span> 
                     Day 1 
                 </a> 
             </li> 
             <li> 
-                <a href="#" class="tf-list-item d-flex flex-column gap-8 align-items-center disabled" id="day2-btn" onclick="addCoins(2)"> 
+                <a href="#" class="tf-list-item d-flex flex-column gap-8 align-items-center disabled" id="day2-btn" onclick="handleDayClick(1)"> 
                     <span class="box-round bg-surface d-flex justify-content-center align-items-center">2K</span> 
                     Day 2 
                 </a> 
             </li> 
             <li> 
-                <a href="#" class="tf-list-item d-flex flex-column gap-8 align-items-center disabled" id="day3-btn" onclick="addCoins(3)"> 
+                <a href="#" class="tf-list-item d-flex flex-column gap-8 align-items-center disabled" id="day3-btn" onclick="handleDayClick(2)"> 
                     <span class="box-round bg-surface d-flex justify-content-center align-items-center">4K</span> 
                     Day 3 
                 </a> 
             </li> 
             <li> 
-                <a href="#" class="tf-list-item d-flex flex-column gap-8 align-items-center disabled" id="day4-btn" onclick="addCoins(4)"> 
+                <a href="#" class="tf-list-item d-flex flex-column gap-8 align-items-center disabled" id="day4-btn" onclick="handleDayClick(3)"> 
                     <span class="box-round bg-surface d-flex justify-content-center align-items-center">8K</span> 
                     Day 4 
                 </a> 
             </li> 
         </ul>        
-    </div>
-</div>
-
-<!-- پاپ‌آپ -->
-<div class="popup-overlay" id="popup">
-    <div class="popup-content">
-        <div class="success_box">
-            <div class="icon-1 ani3">
-                <span class="circle-box lg bg-circle check-icon bg-primary"></span>
+        <h5 class='try-next-time'>
+        {% if not next_day %}
+            Try next Day
+        {% endif %}
+            </h5>
+        <!-- پاپ‌آپ -->
+        <div class="popup-overlay" id="popup">
+            <div class="popup-content">
+                <div class="success_box">
+                    <div class="icon-1 ani3">
+                        <span class="circle-box lg bg-circle check-icon bg-primary"></span>
+                    </div>
+                    <div class="icon-2 ani5">
+                        <span class="circle-box md bg-primary"></span>
+                    </div>
+                    <div class="icon-3 ani8">
+                        <span class="circle-box md bg-primary"></span>
+                    </div>
+                    <div class="icon-4 ani2">
+                        <span class="circle-box sm bg-primary"></span>
+                    </div>
+                    <h2 class="text-surface text-center">Successful!</h2>
+                    <p class="text-large text-center mt-8">Your personal information has been verified</p>
+                    <a href="#" class="tf-btn lg primary mt-40" id="done-btn">Done</a>
+                </div>
+                <button class="close-btn" id="close-btn">×</button>
             </div>
-            <div class="icon-2 ani5">
-                <span class="circle-box md bg-primary"></span>
-            </div>
-            <div class="icon-3 ani8">
-                <span class="circle-box md bg-primary"></span>
-            </div>
-            <div class="icon-4 ani2">
-                <span class="circle-box sm bg-primary"></span>
-            </div>
-            <h2 class="text-surface text-center">Successful!</h2>
-            <p class="text-large text-center mt-8">Your personal information has been verified</p>
-            <a href="#" class="tf-btn lg primary mt-40" id="done-btn">Done</a>
         </div>
-        <button class="close-btn" id="close-btn">×</button>
-    </div>
-</div>
-
+        
         <style>
-            /* پاپ‌آپ - حالت مخفی */
-.popup-overlay {
-    display: none; /* مخفی */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-}
-
-.popup-content {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    max-width: 90%;
-    position: relative;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: #333;
-}
-
-/* دکمه Done */
-.tf-btn.lg.primary {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 18px;
-    display: inline-block;
-    text-align: center;
-    cursor: pointer;
-}
-
-.tf-btn.lg.primary:hover {
-    background-color: #0056b3;
-}
-
-/* غیرفعال کردن دکمه */
-.disabled {
-    pointer-events: none; /* غیرفعال کردن کلیک */
-    opacity: 0.5; /* محو کردن */
-}
-
-/* آیکون تیک */
-.checkmark {
-    font-size: 24px;
-    color: green;
-    font-weight: bold;
-}
-
+            .popup-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.6);
+                z-index: 1000;
+                justify-content: center;
+                align-items: center;
+            }
+        
+            .popup-content {
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                text-align: center;
+                max-width: 90%;
+                position: relative;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            }
+        
+            .close-btn {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background: transparent;
+                border: none;
+                font-size: 24px;
+                cursor: pointer;
+                color: #333;
+            }
+        
+            .tf-btn.lg.primary {
+                background-color: #007bff;
+                color: #fff;
+                padding: 10px 20px;
+                border-radius: 4px;
+                text-decoration: none;
+                font-size: 18px;
+                display: inline-block;
+                text-align: center;
+                cursor: pointer;
+            }
+        
+            .tf-btn.lg.primary:hover {
+                background-color: #0056b3;
+            }
+        
+            .disabled {
+                pointer-events: none;
+                opacity: 0.5;
+            }
+        
+            .checkmark {
+                font-size: 24px;
+                color: green;
+                font-weight: bold;
+            }
         </style>
-        <script>// گرفتن عناصر
+        
+        <script>
             const popup = document.getElementById('popup');
             const closeBtn = document.getElementById('close-btn');
             const doneBtn = document.getElementById('done-btn');
-            
-            // آرایه‌ای از دکمه‌های روزها
             const days = [
-                { button: document.getElementById('day1-btn'), label: document.getElementById('day1-label'), text: "1K" },
-                { button: document.getElementById('day2-btn'), label: document.getElementById('day2-label'), text: "2K" },
-                { button: document.getElementById('day3-btn'), label: document.getElementById('day3-label'), text: "4K" },
-                { button: document.getElementById('day4-btn'), label: document.getElementById('day4-label'), text: "8K" },
+                { button: document.getElementById('day1-btn'), label: "1K", text: "1K" },
+                { button: document.getElementById('day2-btn'), label: "2K", text: "2K" },
+                { button: document.getElementById('day3-btn'), label: "4K", text: "4K" },
+                { button: document.getElementById('day4-btn'), label: "8K", text: "8K" },
             ];
-            
-            // متغیر برای نگه داشتن وضعیت روز فعلی
-            let currentDay = 0; // شروع از Day 1
-            
-            // تابع بازنشانی وضعیت به حالت اولیه
-            function resetDays() {
-                days.forEach((day, index) => {
-                    day.label.innerHTML = day.text; // بازگرداندن مقدار اولیه
-                    day.button.classList.add('disabled'); // غیرفعال کردن همه دکمه‌ها
-                });
-                days[0].button.classList.remove('disabled'); // فعال کردن روز اول
-                currentDay = 0; // بازنشانی روز جاری
-            }
-            
-            // تابع عمومی برای مدیریت کلیک روی هر روز
+        
+            // Function to handle day click
             function handleDayClick(dayIndex) {
-                days[dayIndex].button.addEventListener('click', (e) => {
-                    e.preventDefault(); // جلوگیری از رفتار پیش‌فرض لینک
-                    if (dayIndex > currentDay) return; // اگر روز قبلی کامل نشده، اجازه دسترسی ندارید
-                    popup.style.display = 'flex'; // نمایش پاپ‌آپ
-            
-                    // مدیریت کلیک روی Done
-                    doneBtn.onclick = () => {
-                        popup.style.display = 'none'; // مخفی کردن پاپ‌آپ
-                        days[dayIndex].label.innerHTML = '<span class="checkmark">✔</span>'; // نمایش علامت تیک
-            
-                        if (dayIndex < days.length - 1) {
-                            // فعال کردن روز بعدی
-                            days[dayIndex + 1].button.classList.remove('disabled');
-                        } else {
-                            // همه روزها تمام شد، بازنشانی وضعیت
-                            resetDays();
+                const currentDate = new Date();
+                const lastClickTime = localStorage.getItem(`lastClick_${dayIndex}`);
+                const lastClickDate = lastClickTime ? new Date(lastClickTime) : null;
+        
+                // Check if 24 hours have passed for this day
+                if (lastClickDate && currentDate - lastClickDate < 24 * 60 * 60 * 1000) {
+                    alert("You can only click once every 24 hours.");
+                    return;
+                }
+        
+                // Show popup
+                popup.style.display = 'flex';
+        
+                doneBtn.onclick = () => {
+                    // Save the time of the click
+                    localStorage.setItem(`lastClick_${dayIndex}`, new Date().toString());
+                    popup.style.display = 'none';
+        
+                    // Update button state and checkmark
+                    days[dayIndex].button.innerHTML = `<span class="checkmark">✔</span> ${days[dayIndex].label}`;
+                    if (dayIndex < days.length - 1) {
+                        days[dayIndex + 1].button.classList.remove('disabled');
+                    }
+        
+                    // Disable all buttons for the next 24 hours
+                    days.forEach((day, index) => {
+                        if (index <= dayIndex) {
+                            day.button.classList.add('disabled');
                         }
-                        currentDay = dayIndex + 1; // روز فعلی را افزایش دهید
-                    };
+                    });
+                };
+            }
+        
+            // Close popup when clicking the close button
+            closeBtn.addEventListener('click', () => {
+                popup.style.display = 'none';
+            });
+        
+            // Initialize buttons based on last click time
+            function initButtons() {
+                const currentDate = new Date();
+                days.forEach((day, index) => {
+                    const lastClickTime = localStorage.getItem(`lastClick_${index}`);
+                    const lastClickDate = lastClickTime ? new Date(lastClickTime) : null;
+        
+                    // If 24 hours haven't passed since last click, disable button
+                    if (lastClickDate && currentDate - lastClickDate < 24 * 60 * 60 * 1000) {
+                        day.button.classList.add('disabled');
+                    } else if (index === 0 || !lastClickDate) {
+                        day.button.classList.remove('disabled');
+                    }
                 });
             }
-            
-            // افزودن رفتار به دکمه‌های روزها
-            days.forEach((day, index) => {
-                handleDayClick(index);
-            });
-            
-            // بستن پاپ‌آپ با دکمه Close
-            closeBtn.addEventListener('click', () => {
-                popup.style.display = 'none'; // مخفی کردن پاپ‌آپ
-            });
-            
-            // بازنشانی اولیه (شروع از روز اول)
-            resetDays();
-            </script>
+        
+            // Initialize buttons on page load
+            initButtons();
+        </script>
+        
+        
             <div class="bg-menuDark tf-container">
                 <div class="pt-12 pb-12 mt-4">
                     <div class="wrap-filter-swiper">
@@ -815,16 +822,21 @@
                                 <div class="overflow-auto pt-45 pb-16">
                                     <div class="tf-container">
                                         <ul class="mt-12">
-                                            {% for notification in notifications %}
-                                            <li>
+                                            {% for notification in user_notifications %}
+                                            
+                                            {% if notification.is_read %}
+                                                <li id="{{ notification.id }}" style="opacity: .5;">
+                                            {% else %}
+                                            <li id="{{ notification.id }}" style="opacity: 1;">
+                                            {% endif %}
                                                 <a href="#" class="noti-item bg-menuDark">
                                                     <div class="pb-8 line-bt d-flex">
-                                                        <p class="text-button fw-6">{{ notification.description }}</p>
+                                                        <p class="text-button fw-6">{{ notification.notification.description }}</p>
                                                         <i class="dot-lg bg-primary"></i>
                                                     </div>
                                                     <span class="d-block mt-8">
                                                         <time class="notification-time" datetime="{{ notification.timestamp|date:'c' }}">
-                                                            {{ notification.get_time_ago }}
+                                                            {{ notification.notification.get_time_ago }}
                                                         </time>
                                                     </span>
                                                 </a>
@@ -833,6 +845,53 @@
                                                 <li>No notifications available.</li>
                                             {% endfor %}
                                         </ul>
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                // هنگامی که کاربر روی لینک با کلاس 'box-noti' کلیک می‌کند
+                                                document.querySelector('.icon-noti').addEventListener('click', function() {
+                                                    // جمع‌آوری آیدی‌های تگ‌های <li> درون <ul>
+                                                    let notificationIds = [];
+                                                    document.querySelectorAll('ul.mt-12 li').forEach(function(item) {
+                                                        notificationIds.push(item.id);  // اضافه کردن آیدی‌های تگ li به آرایه
+                                                    });
+                                            
+                                                    // ارسال آیدی‌ها به سرور با استفاده از AJAX
+                                                    fetch('/notifications/mark_notifications_as_read/', {
+                                                        method: 'POST',
+                                                        headers: {
+                                                            'Content-Type': 'application/json',
+                                                            'X-CSRFToken': getCookie('csrftoken')  // اگر از Django استفاده می‌کنید
+                                                        },
+                                                        body: JSON.stringify({ids: notificationIds})
+                                                    })
+                                                    .then(response => response.json())
+                                                    .then(data => {
+                                                        console.log('Response:', data);
+                                                        // اگر موفقیت‌آمیز بود، عملیات‌های دیگر (مانند بستن مدال یا تغییرات UI) را انجام دهید
+                                                    })
+                                                    .catch(error => {
+                                                        console.error('Error:', error);
+                                                    });
+                                                });
+                                            
+                                                // تابع برای دریافت CSRF token در Django
+                                                function getCookie(name) {
+                                                    let cookieValue = null;
+                                                    if (document.cookie && document.cookie !== '') {
+                                                        let cookies = document.cookie.split(';');
+                                                        for (let i = 0; i < cookies.length; i++) {
+                                                            let cookie = cookies[i].trim();
+                                                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                    return cookieValue;
+                                                }
+                                            });
+                                            </script>
+                                            
                                     </div>
                                 </div>
                             </div>
@@ -908,9 +967,15 @@ function updateDayButtons(currentDay, nextDayTime) {
             button.classList.add('disabled'); // غیرفعال کردن دکمه
             button.setAttribute('href', '#'); // غیرفعال کردن لینک
             button.onclick = null; // غیرفعال کردن رویداد کلیک
+        } else if (day < currentDay) {
+            // اگر روز کمتر از روز فعلی باشد، دکمه را غیرفعال می‌کنیم
+            button.classList.add('disabled');
+            button.setAttribute('href', '#');
+            button.onclick = null;
         } else {
-            button.classList.remove('disabled'); // فعال کردن دکمه
-            button.setAttribute('href', '#'); // لینک همچنان غیرقابل کلیک است (اگر نیاز به لینک داشتید، این خط را حذف کنید)
+            // اگر روز فعلی باشد، دکمه فعال می‌شود
+            button.classList.remove('disabled');
+            button.setAttribute('href', '#');
             button.onclick = function() {
                 addCoins(day); // فراخوانی تابع اضافه کردن سکه
             };
@@ -933,6 +998,7 @@ function addCoins(day) {
                 // به‌روزرسانی مقدار سکه‌ها در صفحه
                 document.querySelector('h1 a').textContent = data.coin_amount;
                 updateDayButtons(data.current_day, data.next_day_time); // به‌روزرسانی وضعیت دکمه‌ها
+                document.querySelector('.try-next-time').textContent = 'You succeeded. Your coin has increased. You can receive the next coin the next day.'
             } else {
                 updateDayButtons(data.current_day, data.next_day_time); // به‌روزرسانی وضعیت دکمه‌ها در صورت خطا
             }

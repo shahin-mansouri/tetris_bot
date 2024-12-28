@@ -97,6 +97,33 @@
     <div class="game-container" id="game-container">
         <div class="game-grid" id="game-grid"></div>
         <div class="score-board">
+    <p id="timer">05:00</p>
+
+    <script>
+        let time = 300; // 5 دقیقه (300 ثانیه)
+        
+        function updateTimer() {
+            let minutes = Math.floor(time / 60);
+            let seconds = time % 60;
+
+            // فرمت زمان به صورت دو رقمی
+            if (seconds < 10) {
+                seconds = '0' + seconds;
+            }
+
+            document.getElementById('timer').textContent = minutes + ':' + seconds;
+
+            if (time > 0) {
+                time--;
+            } else {
+                clearInterval(timerInterval);
+                alert("زمان تمام شد!");
+            }
+        }
+
+        let timerInterval = setInterval(updateTimer, 1000);
+    </script>
+
             <p>Score: <span id="score">0</span></p>
             <button id="pause-button">Pause</button>
         </div>

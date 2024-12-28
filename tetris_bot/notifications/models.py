@@ -1,29 +1,30 @@
 from django.db import models
 from django.utils import timezone
-from accounts.models import TelegramUser
-
+from accounts.models import TelegramUser as User
 
 class Notification(models.Model):
-    user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE, related_name='notifications_user')
     title = models.CharField(max_length=255)
     description = models.TextField()
     timestamp = models.DateTimeField(default=timezone.now, editable=False)
-    is_read = models.BooleanField(default=False)
-    sent_to_all = models.BooleanField(default=True)
 
     def __str__(self):
         return self.title
 
     def get_time_ago(self):
-        from django.utils import timezone
-        from datetime import timedelta
+        from django.utils.timesince import timesince
+        return timesince(self.timestamp) + " ago"
 
-        time_diff = timezone.now() - self.timestamp
-        if time_diff < timedelta(minutes=1):
-            return "Just now"
-        elif time_diff < timedelta(hours=1):
-            return f"{time_diff.seconds // 60} minutes ago"
-        elif time_diff < timedelta(days=1):
-            return f"{time_diff.seconds // 3600} hours ago"
-        else:
-            return f"{time_diff.days} days ago"
+class UserNotification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    notification = models.ForeignKey(Notification, on_delete=models.CASCADE)
+    is_read = models.BooleanField(default=False)
+    read_at = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.notification.title} for {self.user.username}"
+
+    def mark_as_read(self):
+        if not self.is_read:
+            self.is_read = True
+            self.read_at = timezone.now()
+            self.save()
