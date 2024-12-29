@@ -1,8 +1,8 @@
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
-from django.contrib.auth.decorators import login_required
+# from django.shortcuts import get_object_or_404
+# from django.contrib.auth.decorators import login_required
 from .models import UserNotification
-from django.utils import timezone
+# from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 import json
 
