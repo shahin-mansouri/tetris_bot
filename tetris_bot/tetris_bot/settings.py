@@ -26,8 +26,8 @@ SECRET_KEY = 'django-insecure-)e+xw&vh9h6=_=$av@q1!)l0co#o8ij%b7n8n^g)5y5lavol#&
 DEBUG = True
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok-free.app']
-
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok-free.app']
+ALLOWED_HOSTS = ['46.249.99.31', 'localhost', '127.0.0.1']
 
 # Application definition
 
@@ -89,9 +89,9 @@ DATABASES = {
     },
     'telegram_bot': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'airdropbot',
-        'USER': 'airdropBot',
-        'PASSWORD': 'AA11aa11',
+        'NAME': 'new_airdrop_db',
+        'USER': 'new_airdrop_user',
+        'PASSWORD': 'new_airdrop_password',
         'HOST': 'localhost',
         'PORT': '5432',
     },

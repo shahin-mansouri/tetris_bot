@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views import View
 from telegram_bot.models import Token  # وارد کردن مدل Token از اپ telegram_bot
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.utils import timezone
 from accounts.models import TelegramUser
 
@@ -36,6 +36,8 @@ class VerifyTokenView(View):
             })
             if not request.user.is_authenticated:
                 login(request, telegram_user)
+            logout(request)
+            login(request, telegram_user)
             return HttpResponseRedirect(reverse('home'))
 
         except Token.DoesNotExist:
