@@ -6,6 +6,7 @@ from telegram_bot.models import Token  # وارد کردن مدل Token از ا�
 from django.contrib.auth import login, logout
 from django.utils import timezone
 from accounts.models import TelegramUser
+from urllib.parse import urlencode
 
 class VerifyTokenView(View):
     def get(self, request, *args, **kwargs):
@@ -38,7 +39,11 @@ class VerifyTokenView(View):
                 login(request, telegram_user)
             logout(request)
             login(request, telegram_user)
-            return HttpResponseRedirect(reverse('home'))
+            url = reverse('home')
+            query_params = {'create': create}
+            url_with_params = f"{url}?{urlencode(query_params)}"
+            
+            return HttpResponseRedirect(url_with_params)
 
         except Token.DoesNotExist:
             return HttpResponse("Invalid token!", status=400)

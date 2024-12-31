@@ -17,6 +17,11 @@ def home(request):
             context['next_day'] = coins.is_valid()
         # context['notifications'] = Notification.objects.all()
         context['user_notifications'] = UserNotification.objects.filter(user=user)
+
+        create_param = request.GET.get('create')
+        print(create_param)
+        if create_param is True:
+            context['create'] = create_param
         return render(request, 'home/home.html', context=context)
     return HttpResponse("خطا: تمام فیلدها باید پر شوند.", status=400)
 
