@@ -513,72 +513,83 @@
                 <div class="overflow-auto pt-45 pb-16">
                     <div class="tf-container">
                         <ul class="mt-12">
-                            {% for notification in notifications %}
-                                <li>
-                                    <a href="#" class="noti-item bg-menuDark">
-                                        <div class="pb-8 line-bt d-flex">
-                                            <p class="text-button fw-6">{{ notification.description }}</p>
-                                            <i class="dot-lg bg-primary"></i>
-                                        </div>
-                                        <span class="d-block mt-8">
-                                            <time class="notification-time" datetime="{{ notification.timestamp|date:'c' }}">
-                                                {{ notification.get_time_ago }}
-                                            </time>
-                                        </span>
-                                    </a>
-                                </li>
+                            {% for notification in user_notifications %}
+                            
+                            {% if notification.is_read %}
+                                <li id="{{ notification.id }}" style="opacity: .5;">
+                            {% else %}
+                            <li id="{{ notification.id }}" style="opacity: 1;">
+                            {% endif %}
+                                <a href="#" class="noti-item bg-menuDark">
+                                    <div class="pb-8 line-bt d-flex">
+                                        <p class="text-button fw-6">{{ notification.notification.description }}</p>
+                                        <i class="dot-lg bg-primary"></i>
+                                    </div>
+                                    <span class="d-block mt-8">
+                                        <time class="notification-time" datetime="{{ notification.timestamp|date:'c' }}">
+                                            {{ notification.notification.get_time_ago }}
+                                        </time>
+                                    </span>
+                                </a>
+                            </li>
                             {% empty %}
                                 <li>No notifications available.</li>
                             {% endfor %}
-                            {% comment %} <li class="mt-12">
-                                <a href="#" class="noti-item bg-menuDark">
-                                    <div class="pb-8 line-bt d-flex">
-                                        <p class="text-button fw-6">Cointex to adjust components of several indexes</p>
-                                        <i class="dot-lg bg-primary"></i>
-                                    </div>
-                                    <span class="d-block mt-8">5 minutes ago</span>
-                                </a>
-                            </li>
-                            <li class="mt-12">
-                                <a href="#" class="noti-item bg-menuDark">
-                                    <div class="pb-8 line-bt d-flex">
-                                        <p class="text-button fw-6">Cointex to just tick size and trading amount precision of spots/margins and perpetual swaps</p>
-                                        <i class="dot-lg bg-primary"></i>
-                                    </div>
-                                    <span class="d-block mt-8">5 minutes ago</span>
-                                </a>
-                            </li>
-                            <li class="mt-12">
-                                <a href="#" class="noti-item bg-menuDark">
-                                    <div class="pb-8 line-bt">
-                                        <p class="text-button fw-6 text-secondary">Cointex to adjust components of several indexes</p>
-                                    </div>
-                                    <span class="d-block mt-8 text-secondary">1 day ago</span>
-                                </a>
-                            </li>
-                            <li class="mt-12">
-                                <a href="#" class="noti-item bg-menuDark">
-                                    <div class="pb-8 line-bt">
-                                        <p class="text-button fw-6 text-secondary">Cryptex wallet uses Achain network service</p>
-                                    </div>
-                                    <span class="d-block mt-8 text-secondary">1 day ago</span>
-                                </a>
-                            </li>
-                            <li class="mt-12">
-                                <a href="#" class="noti-item bg-menuDark">
-                                    <div class="pb-8 line-bt">
-                                        <p class="text-button fw-6 text-secondary">Cointex to adjust components of several indexes</p>
-                                    </div>
-                                    <span class="d-block mt-8 text-secondary">1 day ago</span>
-                                </a>
-                            </li> {% endcomment %}
                         </ul>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                // هنگامی که کاربر روی لینک با کلاس 'box-noti' کلیک می‌کند
+                                document.querySelector('.icon-noti').addEventListener('click', function() {
+                                    // جمع‌آوری آیدی‌های تگ‌های <li> درون <ul>
+                                    let notificationIds = [];
+                                    document.querySelectorAll('ul.mt-12 li').forEach(function(item) {
+                                        notificationIds.push(item.id);  // اضافه کردن آیدی‌های تگ li به آرایه
+                                    });
+                            
+                                    // ارسال آیدی‌ها به سرور با استفاده از AJAX
+                                    fetch('/notifications/mark_notifications_as_read/', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRFToken': getCookie('csrftoken')  // اگر از Django استفاده می‌کنید
+                                        },
+                                        body: JSON.stringify({ids: notificationIds})
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        console.log('Response:', data);
+                                        // اگر موفقیت‌آمیز بود، عملیات‌های دیگر (مانند بستن مدال یا تغییرات UI) را انجام دهید
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                    });
+                                });
+                            
+                                // تابع برای دریافت CSRF token در Django
+                                function getCookie(name) {
+                                    let cookieValue = null;
+                                    if (document.cookie && document.cookie !== '') {
+                                        let cookies = document.cookie.split(';');
+                                        for (let i = 0; i < cookies.length; i++) {
+                                            let cookie = cookies[i].trim();
+                                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    return cookieValue;
+                                }
+                            });
+                            </script>
+                            
                     </div>
                 </div>
-               
             </div>
         </div>
     </div>
+
+    
     
 
     <script type="text/javascript" src="{% static 'home/js/bootstrap.min.js' %} "></script>

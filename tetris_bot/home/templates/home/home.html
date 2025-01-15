@@ -23,7 +23,7 @@
 <body>
     <!-- preloade -->
     <div class="preload preload-container">
-        <div class="preload-logo" style="background-image: url('{% static 'home/images/logo/144.png' %}')">
+        <div class="preload-logo" style="background-image: url('{% static 'home/images/logo.png' %}')">
             <div class="spinner"></div>
         </div>
     </div>
@@ -34,8 +34,8 @@
             <div class="box-account style-2">
                 <a href="{% url 'profile' %}">
                     <img src="{% static 'home/images/avt/avt2.jpg' %}" alt="img" class="avt">
-                </a>
-                {% comment %} <div class="search-box box-input-field style-2">
+                </a>{% comment %}
+                <div class="search-box box-input-field style-2">
                     <a href="home-search.html" class="icon-search"></a>
                     <input type="text" placeholder="Search in Tetra.Bot" required class="clear-ip">
                     <i class="icon-close"></i>
@@ -47,11 +47,12 @@
             </div>
         </div>
     </div>
-    <div class="pt-68 pb-80">
+    <div class="pt-68 pb-68">
         <div class="bg-menuDark tf-container">
-            <div class="pt-12 pb-12 mt-4">
+            <div class="pt-12 pb-12">
                 <!--<h5><span class="text-primary">Connect too My Wallet</span> - <a href="#" class="choose-account" data-bs-toggle="modal" data-bs-target="#accountWallet"><span class="dom-text">Account 1 </span> &nbsp;<i class="icon-select-down"></i></a> </h5>-->
-                <h1 style="padding-bottom: 10px;" class="mt-16"><a href="#">{{ coins.coin_amount }}  </a><img style="width: 30px;" src="{% static 'home/images/avt/coinn.png' %}" alt=""></h1>
+                <p id="coin-amount" style="font-size: 100px; margin-top: 50px; text-align: center;">{{ coins.coin_amount }}</p>
+                <img style="align-items: center; width: 40%; justify-content: center;" src="{% static 'home/images/coin.png' %}" alt="">
                 <!-- <ul class="mt-16 grid-4 m--16">
                     <li>
                         <a href="choose-payment.html" class="tf-list-item d-flex flex-column gap-8 align-items-center">
@@ -144,36 +145,42 @@
         <h5><span class="text-primary">Receive Daily Coin</span></h5>
         <ul class="mt-16 grid-4 m--16"> 
             <li> 
-                <a href="#" class="tf-list-item d-flex flex-column gap-8 align-items-center disabled" id="day1-btn" onclick="handleDayClick(0)"> 
+                <a href="" class="tf-list-item d-flex flex-column gap-8 align-items-center disabled" id="day1-btn" onclick="handleDayClick(0)"> 
                     <span class="box-round bg-surface d-flex justify-content-center align-items-center">1K</span> 
                     Day 1 
                 </a> 
             </li> 
             <li> 
-                <a href="#" class="tf-list-item d-flex flex-column gap-8 align-items-center disabled" id="day2-btn" onclick="handleDayClick(1)"> 
+                <a href="" class="tf-list-item d-flex flex-column gap-8 align-items-center disabled" id="day2-btn" onclick="handleDayClick(1)"> 
                     <span class="box-round bg-surface d-flex justify-content-center align-items-center">2K</span> 
                     Day 2 
                 </a> 
             </li> 
             <li> 
-                <a href="#" class="tf-list-item d-flex flex-column gap-8 align-items-center disabled" id="day3-btn" onclick="handleDayClick(2)"> 
+                <a href="" class="tf-list-item d-flex flex-column gap-8 align-items-center disabled" id="day3-btn" onclick="handleDayClick(2)"> 
                     <span class="box-round bg-surface d-flex justify-content-center align-items-center">4K</span> 
                     Day 3 
                 </a> 
             </li> 
             <li> 
-                <a href="#" class="tf-list-item d-flex flex-column gap-8 align-items-center disabled" id="day4-btn" onclick="handleDayClick(3)"> 
+                <a href="" class="tf-list-item d-flex flex-column gap-8 align-items-center disabled" id="day4-btn" onclick="handleDayClick(3)"> 
                     <span class="box-round bg-surface d-flex justify-content-center align-items-center">8K</span> 
                     Day 4 
                 </a> 
             </li> 
-        </ul>        
-        <h5 class='try-next-time'>
+        </ul>
+        <div style="border-radius: 10px;">
+        <p>{{next_day}}</p>
         {% if not next_day %}
-            Try next Day
+        <h5 id="try-next-time" style="background-color: blue; margin: 30px; border-radius: 10px;">
+                not for now!
         </h5>
         {% endif %}
-            
+            <h5 id="try-next-time" style="background-color: blue; margin: 30px; border-radius: 10px;">
+                
+            </h5>
+        </div>
+        
         <!-- پاپ‌آپ -->
         <div class="popup-overlay" id="popup">
             <div class="popup-content">
@@ -331,7 +338,102 @@
             // Initialize buttons on page load
             initButtons();
         </script>
-        
+        <script>
+            // دریافت CSRF توکن برای ارسال درخواست POST
+            function getCSRFToken() {
+                const name = 'csrftoken';
+                const cookies = document.cookie.split('; ');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].split('=');
+                    if (cookie[0] === name) {
+                        return cookie[1];
+                    }
+                }
+                return '';
+            }
+            function updateDayButton(dayIndex, newLabel, isDisabled) {
+                const dayButton = document.getElementById(`day${dayIndex + 1}-btn`);
+                dayButton.innerHTML = `<span class="checkmark">✔</span> ${newLabel}`;
+                dayButton.classList.add('disabled');
+                dayButton.removeAttribute('onclick');
+                if (isDisabled) {
+                  dayButton.classList.add('disabled');
+                } else {
+                    dayButton.classList.remove('disabled');
+                }
+            }
+            
+            // به‌روزرسانی وضعیت دکمه‌ها (فعال / غیرفعال)
+            function updateDayButtons(currentDay, nextDayTime) {
+                const allButtons = document.querySelectorAll('.tf-list-item');
+                const now = new Date();
+                const nextDayDate = new Date(nextDayTime);
+            
+                allButtons.forEach((button, index) => {
+                    const day = index + 1;
+            
+                    // اگر روز بیشتر از روز فعلی است یا هنوز زمان انتظار تمام نشده
+                    if (day > currentDay || now < nextDayDate) {
+                        button.classList.add('disabled'); // غیرفعال کردن دکمه
+                        button.setAttribute('href', '#'); // غیرفعال کردن لینک
+                        button.onclick = null; // غیرفعال کردن رویداد کلیک
+                    } else if (day < currentDay) {
+                        // اگر روز کمتر از روز فعلی باشد، دکمه را غیرفعال می‌کنیم
+                        button.classList.add('disabled');
+                        button.setAttribute('href', '#');
+                        button.onclick = null;
+                    } else {
+                        // اگر روز فعلی باشد، دکمه فعال می‌شود
+                        button.classList.remove('disabled');
+                        button.setAttribute('href', '#');
+                        button.onclick = function() {
+                            addCoins(day); // فراخوانی تابع اضافه کردن سکه
+                        };
+                    }
+                });
+            }
+            
+            {% comment %} // اضافه کردن سکه‌ها با ارسال درخواست به سرور
+            function addCoins(day) {
+                fetch(`/home/coin-increase/${day}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFToken(),
+                    },
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.success) {
+                            console.log (data.coin_amount);
+                            // به‌روزرسانی مقدار سکه‌ها در صفحه
+                            document.querySelector('#coin-amount').textContent = data.coin_amount;
+                            updateDayButton(data.current_day -1 , data.text, true)
+                            updateDayButtons(data.current_day, data.next_day_time); // به‌روزرسانی وضعیت دکمه‌ها
+                           
+                            if (data.current_day <= 4) {
+                                
+                            }
+            
+                        } else {
+                            updateDayButtons(data.current_day, data.next_day_time); // به‌روزرسانی وضعیت دکمه‌ها در صورت خطا
+                        }
+                        document.querySelector('.try-next-time').textContent = 'You succeeded. Your coin has increased. You can receive the next coin the next day.';
+                    })
+                    .catch((error) => console.error('Error:', error));
+            } {% endcomment %}
+            
+            // بارگذاری اولیه برای به‌روزرسانی دکمه‌ها
+            document.addEventListener('DOMContentLoaded', () => {
+                // بارگذاری وضعیت فعلی از سرور
+                fetch('/home/coin-day-status/')
+                    .then((response) => response.json())
+                    .then((data) => {
+                        updateDayButtons(data.current_day, data.next_day_time); // به‌روزرسانی وضعیت دکمه‌ها
+                    })
+                    .catch((error) => console.error('Error:', error));
+            });
+            </script>
         
             <div class="bg-menuDark tf-container">
                 <div class="pt-12 pb-12 mt-4">
@@ -997,9 +1099,9 @@ function addCoins(day) {
         .then((data) => {
             if (data.success) {
                 // به‌روزرسانی مقدار سکه‌ها در صفحه
-                document.querySelector('h1 a').textContent = data.coin_amount;
+                document.querySelector('#coin-amount').textContent = data.coin_amount;
                 updateDayButtons(data.current_day, data.next_day_time); // به‌روزرسانی وضعیت دکمه‌ها
-                document.querySelector('.try-next-time').textContent = 'You succeeded. Your coin has increased. You can receive the next coin the next day.'
+                document.querySelector('#try-next-time').textContent = 'You succeeded. Your coin has increased. You can receive the next coin the next day.'
             } else {
                 updateDayButtons(data.current_day, data.next_day_time); // به‌روزرسانی وضعیت دکمه‌ها در صورت خطا
             }

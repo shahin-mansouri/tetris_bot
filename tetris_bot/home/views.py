@@ -36,6 +36,9 @@ def coin_day(request, day):
         if coins.is_valid():
             coins.coin_amount += (2**(day-1))*1000
             coins.day += 1
+            coins.day = coins.day%5
+            if not coins.day:
+                coins.day = 1
             coins.next_day_time = now() + timedelta(days=1)
             coins.save()
             print('asdfasdfs')
