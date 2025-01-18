@@ -2818,7 +2818,7 @@ input[type=text].ip-style2 {
   position: relative;
   width: 100%;
   height: 100%;
-  background: #25c866;
+  background: blue;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -2840,7 +2840,7 @@ input[type=text].ip-style2 {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #25c866;
+  background: blue;
   background-repeat: no-repeat;
   background-position: center center;
   animation: preload 1s linear infinite alternate;
@@ -2896,5 +2896,98 @@ input[type=text].ip-style2 {
 .theme-light .modal-backdrop.show {
   opacity: 0.5;
 }
+
+.share-telegram {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+}
+.share-telegram1 {
+  width: 10%;
+  height: 100%;
+  color: white;
+  border: none;
+  font-size: 14px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+.share-telegram1:hover{
+  
+}
+.share-telegram2 {
+  width: 70%;
+  height: 100%;
+  border-radius: 0px;
+  text-align: center;
+  padding: 0;
+  font-size: 14px;
+}
+.share-telegram2:hover {
+  border-radius: 0px;
+  border: 0px;
+}
+.share-telegram3 {
+  width: 10%;
+  height: 100%;
+  color: white;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+.share-telegram4 {
+  width: 10%;
+  height: 100%;
+  color: white;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+  .animated-text {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .animated-text::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: -100%;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 100%);
+    animation: shine 4s infinite;
+  }
+
+  @keyframes shine {
+    0% {
+      left: -100%;
+    }
+    100% {
+      left: 100%;
+    }
+  }
+
+  .notfornow {
+    text-align: center;
+    height: 100vh;
+    margin-top: 30%;
+  }
+  .try-next-time{
+    margin: 10px;
+    color: #0004ff;
+    background-color: #0004ff;
+  }
 
 /*# sourceMappingURL=styles.css.map */

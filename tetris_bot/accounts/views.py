@@ -4,6 +4,7 @@ from .models import TelegramUser
 from notifications.models import Notification
 from home.models import Coin
 from telegram_bot.models import User
+from notifications.models import Notification, UserNotification
 
 
 class ProfileView(TemplateView):
@@ -21,6 +22,7 @@ class ProfileView(TemplateView):
         
         s_u_coins = Coin.objects.filter(user__in=similar_users)
         context['invitees'] = s_u_coins
+        context['user_notifications'] = UserNotification.objects.filter(user=user)
         return context
     
 from django.contrib import auth
