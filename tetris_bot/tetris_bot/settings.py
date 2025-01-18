@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['46.249.99.31', 'localhost', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'youtube_auth.apps.YoutubeAuthConfig',
     'notifications.apps.NotificationsConfig',
     'awards.apps.AwardsConfig',
     'verify_token.apps.VerifyTokenConfig',

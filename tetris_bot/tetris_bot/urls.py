@@ -29,6 +29,7 @@ urlpatterns = [
     path('verify_token/', include('verify_token.urls')),
     path('awards/', include('awards.urls')),
     path('notifications/', include('notifications.urls')),
+    path('youtube-auth/', include('youtube_auth.urls')),
 ]
 
 

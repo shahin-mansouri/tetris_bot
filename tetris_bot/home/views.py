@@ -4,24 +4,33 @@ from django.contrib.auth import login
 from accounts.models import TelegramUser
 from .models import Coin
 from notifications.models import Notification, UserNotification
+from youtube_auth.models import Youtube
 
 
 def home(request):
     if request.user.is_authenticated:
         context = dict()
         user = request.user
+
+        # اطلاعات مربوط به کوین‌ها
         coins, create = Coin.objects.get_or_create(user=user)
         context['coins'] = coins
         context['day'] = coins.day
         if coins.next_day_time is not None:
             context['next_day'] = coins.is_valid()
-        # context['notifications'] = Notification.objects.all()
+
+        # اطلاعات مربوط به نوتیفیکیشن‌ها
         context['user_notifications'] = UserNotification.objects.filter(user=user)
 
+        # بررسی لاگین بودن کاربر در Google و وضعیت سابسکرایب
+        youtube_subscription = Youtube.objects.filter(user=user).first()
+        context['youtube_subscription'] = youtube_subscription
+
+        # بررسی پارامتر create
         create_param = request.GET.get('create')
-        print(create_param)
-        if create_param is True:
-            context['create'] = create_param
+        if create_param == 'true':  # مقایسه با رشته 'true'
+            context['create'] = True
+
         return render(request, 'home/home.html', context=context)
     return HttpResponse("خطا: تمام فیلدها باید پر شوند.", status=400)
 
@@ -36,6 +45,9 @@ def coin_day(request, day):
         if coins.is_valid():
             coins.coin_amount += (2**(day-1))*1000
             coins.day += 1
+            coins.day = coins.day%5
+            if not coins.day:
+                coins.day = 1
             coins.next_day_time = now() + timedelta(days=1)
             coins.save()
             print('asdfasdfs')
