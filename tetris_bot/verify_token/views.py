@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from telegram_bot.models import Token  # وارد کردن مدل Token از اپ telegram_bot
@@ -7,10 +7,19 @@ from django.contrib.auth import login, logout
 from django.utils import timezone
 from accounts.models import TelegramUser
 from urllib.parse import urlencode
+from django.views.generic import TemplateView
+
+
+
+class Wellcome(TemplateView):
+    template_name = "verify_token/index.html"
+
 
 class VerifyTokenView(View):
     def get(self, request, *args, **kwargs):
         token_value = request.GET.get("token")
+        if token_value is None:
+            return redirect('home')
         
         # بررسی اینکه آیا توکن موجود است یا خیر
         try:
@@ -39,11 +48,13 @@ class VerifyTokenView(View):
                 login(request, telegram_user)
             logout(request)
             login(request, telegram_user)
-            url = reverse('home')
-            query_params = {'create': create}
-            url_with_params = f"{url}?{urlencode(query_params)}"
+            if not create:
+                url = reverse('home')
+                query_params = {'create': create}
+                url_with_params = f"{url}?{urlencode(query_params)}"
+                return HttpResponseRedirect(url_with_params)
+            return redirect('wellcome')
             
-            return HttpResponseRedirect(url_with_params)
 
         except Token.DoesNotExist:
             return HttpResponse("Invalid token!", status=400)

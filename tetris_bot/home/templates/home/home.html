@@ -1019,6 +1019,9 @@
                         </div>
                     </div>
 <!-- noti popup -->
+
+{% if create %}
+    
 <div class="modal fade modalCenter" id="modalNoti">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content modal-sm">
@@ -1033,6 +1036,7 @@
         </div>
     </div>
 </div>
+    
 
 <!-- noti popup 2-->
 <div class="modal fade modalCenter" id="notiPrivacy">
@@ -1059,6 +1063,7 @@
         </div>
     </div>
 </div>
+{% endif %}
 
 <script>
 // دریافت CSRF توکن برای ارسال درخواست POST
