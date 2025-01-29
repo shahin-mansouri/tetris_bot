@@ -48,12 +48,13 @@ class VerifyTokenView(View):
                 login(request, telegram_user)
             logout(request)
             login(request, telegram_user)
-            if not create:
+            if create:
+                return redirect('wellcome')
+            else:
                 url = reverse('home')
-                query_params = {'create': create}
+                query_params = {'create': False}
                 url_with_params = f"{url}?{urlencode(query_params)}"
                 return HttpResponseRedirect(url_with_params)
-            return redirect('wellcome')
             
 
         except Token.DoesNotExist:
