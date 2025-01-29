@@ -21,23 +21,51 @@
     <link rel="apple-touch-icon-precomposed" href="{% static 'home/images/logo/48.png' %} " />
 
     <title>earn</title>
+    <style>
+        .preload-logo {
+            background-size: 200%;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 
 <body>
     <!-- preloade -->
     <div class="preload preload-container">
-        <div class="preload-logo" style="background-image: url({% static 'images/logo/144.png' %})">
+        <div class="preload-logo" style="background-image: url('{% static 'home/images/znew/logo.png' %}')">
             <div class="spinner"></div>
         </div>
     </div>
-    <!-- /preload --> 
+    <!-- /preload -->
 
-    <div class="header-style2 fixed-top d-flex align-items-center justify-content-between bg-surface">
+    <div class="header-style2 fixed-top d-flex align-items-center justify-content-between">
         <h3>Invition</h3>
     </div>
+<div class="element-sh">
     <div class="pt-55 pb-80">
         <div class="tf-container">
-
+            <div class="tf-container">
+                <div class="pt-12 pb-12 mt-4">
+            
+                    <div class="swiper tf-swiper swiper-wrapper-r mt-16" data-space-between="16" data-preview="2.8" data-tablet="2.8" data-desktop="3">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <img style="border-radius: 13px;" src="{% static 'home/images/znew/IMG_6449.jpg' %}" alt="">
+                            </div>
+                            <div class="swiper-slide">
+                                <img style="border-radius: 13px;" src="{% static 'home/images/znew/IMG_6446.jpg' %}" alt="">
+                            </div>
+                            <div class="swiper-slide">
+                                <img style="border-radius: 13px;" src="{% static 'home/images/znew/IMG_6448.jpg' %}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <h5 class="mt-20">Create & sell your Wallet</h5>
             <div class="swiper tf-swiper swiper-wrapper-r mt-12" data-space-between="12" data-preview="1.3" data-tablet="2.3" data-desktop="3">
                 <div class="swiper-wrapper">
@@ -92,7 +120,11 @@
                 <div class="tab-content mt-16 mb-16">
                     <div class="tab-pane fade show active" id="cryptocurrency" role="tabpanel">
                         <ul>
-                            
+                            {% if not invitees5  %}
+                            <li>
+                                <p>invite is None</p>
+                            </li>
+                            {% endif %}
                             {% for invite in invitees5 %}
                             {% with invite.coin_amount|percentage_difference:current_user.coin_amount as diff %}
                                 <li class="mt-16">
@@ -191,30 +223,31 @@
             </div>
         </div>
     </div>
+</div>
     
     <div class="menubar-footer footer-fixed">
         <ul class="inner-bar">
-            <li>
+            <li class="rgto">
                 <a href="{% url 'home' %}">
-                    <i class="icon icon-home2"></i>
+                    <img style="width: 50px;" src="{% static 'home/images/znew/1.png' %}" alt="">
                     Home
                 </a>
             </li>
-            <li>
+            <li class="rgto">
                 <a href="{% url 'lunch_game' %}">
-                    <svg width="27px" height="27px" viewBox="0 0 48 48" id="b" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.672"></g><g id="SVGRepo_iconCarrier"> <defs> <style>.c{fill:#777880;}.d{fill:none;stroke:#777880;stroke-linecap:round;stroke-linejoin:round;}</style> </defs> <g> <line class="d" x1="14.25" y1="20.8401" x2="14.25" y2="15.4132"></line> <line class="d" x1="11.5366" y1="18.1267" x2="16.9634" y2="18.1267"></line> <path class="d" d="m17.1869,10.8372v-1.6128c0-.581-.471-1.052-1.052-1.052h-3.7698c-.581,0-1.052.471-1.052,1.052v1.7708"></path> <path class="d" d="m29.0435,24.8808l4.5534,6.83c1.485,2.2276,4.377,3.0323,6.7991,1.8919,2.2669-1.0672,3.5041-3.5476,2.9874-5.9993-.9842-4.6705-1.7692-9.0259-2.5726-11.9826-.8457-3.1124-3.8836-5.2804-7.2842-5.2804-2.0521,0-3.9114.8108-5.2876,2.1236h-8.4779c-1.3763-1.3128-3.2355-2.1236-5.2876-2.1236-3.4006,0-6.4386,2.1681-7.2842,5.2804-.8034,2.9567-1.5884,7.3122-2.5726,11.9826-.5167,2.4517.7205,4.9321,2.9874,5.9993,2.4221,1.1404,5.3141.3357,6.7991-1.8919l4.5534-6.83h10.087Z"></path> <path class="d" d="m30.8131,10.8372v-1.6128c0-.581.471-1.052,1.052-1.052h3.7698c.581,0,1.052.471,1.052,1.052v1.7708"></path> <circle class="c" cx="31.03" cy="18.1267" r=".75"></circle> <circle class="c" cx="36.4634" cy="18.1267" r=".75"></circle> <circle class="c" cx="33.75" cy="15.4132" r=".75"></circle> <circle class="c" cx="33.75" cy="20.8401" r=".785"></circle> </g> <g> <path class="d" d="m20.8882,34.6779s.2691,3.6048,4.1955,5.1496c-1.5126-2.8643,2.3172-5.4068,2.2206-7.2091.7724,1.4482.2896,3.0574.2896,3.0574,0,0,4.0551-5.3746-2.3816-8.6895,1.0299,1.8988,1.223,1.9632,1.223,3.7976"></path> <path class="d" d="m26.3767,29.597s-2.9022,2.0559-2.5803,4.7593c-1.3267-1.3611-1.2874-1.931-1.223-3.8942-2.1715-.0043-.8818-2.2473.2575-3.4758-4.5378,1.7057-4.2804,6.5654-2.4459,8.9148.4184-1.6092,1.3302-2.1501,1.3302-2.1501"></path> </g> </g></svg>
+                    <img style="width: 40px;" src="{% static 'home/images/znew/2.png' %}" alt="">
                     Game
                 </a>
             </li>
-            <li class="active">
-                <a href="earn.html">
-                    <svg width="27px" height="27px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M13 3C13 2.44772 12.5523 2 12 2C11.4477 2 11 2.44772 11 3V11H3C2.44772 11 2 11.4477 2 12C2 12.5523 2.44772 13 3 13H11V21C11 21.5523 11.4477 22 12 22C12.5523 22 13 21.5523 13 21V13H21C21.5523 13 22 12.5523 22 12C22 11.4477 21.5523 11 21 11H13V3Z" fill="#777880"></path> </g></svg>
+            <li class="active rgto">
+                <a href="{{invition}}">
+                    <img style="width: 45px;" src="{% static 'home/images/znew/3.png' %}" alt="">
                     Invitation
                 </a>
             </li>
             <li>
                 <a href="{% url 'profile' %}">
-                    <i class="icon icon-wallet"></i>
+                    <img style="width: 40px;" src="{% static 'home/images/znew/4.png' %}" alt="">
                     Profile
                 </a>
             </li>

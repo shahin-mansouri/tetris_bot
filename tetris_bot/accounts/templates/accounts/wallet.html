@@ -19,16 +19,26 @@
     <link rel="apple-touch-icon-precomposed" href="{% static 'home/images/logo/48.png' %}" />
 
     <title>Profile</title>
+    <style>
+        .preload-logo {
+            background-size: 200%;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 
 <body class="app-wallet">
     <!-- preloade -->
     <div class="preload preload-container">
-        <div class="preload-logo" style="background-image: url('{% static 'images/logo/144.png' %}')">
+        <div class="preload-logo" style="background-image: url('{% static 'home/images/znew/logo.png' %}')">
             <div class="spinner"></div>
         </div>
     </div>
-    <!-- /preload --> 
+    <!-- /preload -->
 
     <div class="header-style2 fixed-top bg-menuDark">
         <div class="d-flex justify-content-between align-items-center">
@@ -47,11 +57,10 @@
             </div>
         </div>
     </div>
-    <div class="pt-68 pb-80">
-        <div class="bg-menuDark tf-container animated-text">
-            <div class="pt-12 pb-12 mt-4">
-                <h1>Tetra Game</h1>
-            </div>
+    <div class="pt-68 pb-80 bg-menuDark">
+        <div class="sdfgjkl">
+            <img style="width: 100px;" src="/static/home/images/znew/coin.png" alt="">
+            <h3>Tetra Game gone!</h3>
         </div>
         <div class="bg-menuDark tf-container">
             <div class="pt-12 pb-12 mt-4">
@@ -60,7 +69,9 @@
                     <a href="#recipient" data-bs-toggle="modal" class="text-secondary">View All</a>
                 </div>
                 <ul class="mt-16 grid-5 gap-12">
-                    
+                    {% if not invitees5  %}
+                        <p>invite is None</p>
+                    {% endif %}
                     {% for invite in invitees %}
                     <li>
                         <a href="choose-payment.html" class="tf-list-item d-flex flex-column gap-4 align-items-center">
@@ -122,217 +133,31 @@
     
     <div class="menubar-footer footer-fixed">
         <ul class="inner-bar">
-            <li class="active">
+            <li class="rgto">
                 <a href="{% url 'home' %}">
-                    <i class="icon icon-home2"></i>
+                    <img style="width: 50px;" src="{% static 'home/images/znew/1.png' %}" alt="">
                     Home
                 </a>
             </li>
-            <li>
+            <li class="rgto">
                 <a href="{% url 'lunch_game' %}">
-                    <svg width="27px" height="27px" viewBox="0 0 48 48" id="b" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.672"></g><g id="SVGRepo_iconCarrier"> <defs> <style>.c{fill:#777880;}.d{fill:none;stroke:#777880;stroke-linecap:round;stroke-linejoin:round;}</style> </defs> <g> <line class="d" x1="14.25" y1="20.8401" x2="14.25" y2="15.4132"></line> <line class="d" x1="11.5366" y1="18.1267" x2="16.9634" y2="18.1267"></line> <path class="d" d="m17.1869,10.8372v-1.6128c0-.581-.471-1.052-1.052-1.052h-3.7698c-.581,0-1.052.471-1.052,1.052v1.7708"></path> <path class="d" d="m29.0435,24.8808l4.5534,6.83c1.485,2.2276,4.377,3.0323,6.7991,1.8919,2.2669-1.0672,3.5041-3.5476,2.9874-5.9993-.9842-4.6705-1.7692-9.0259-2.5726-11.9826-.8457-3.1124-3.8836-5.2804-7.2842-5.2804-2.0521,0-3.9114.8108-5.2876,2.1236h-8.4779c-1.3763-1.3128-3.2355-2.1236-5.2876-2.1236-3.4006,0-6.4386,2.1681-7.2842,5.2804-.8034,2.9567-1.5884,7.3122-2.5726,11.9826-.5167,2.4517.7205,4.9321,2.9874,5.9993,2.4221,1.1404,5.3141.3357,6.7991-1.8919l4.5534-6.83h10.087Z"></path> <path class="d" d="m30.8131,10.8372v-1.6128c0-.581.471-1.052,1.052-1.052h3.7698c.581,0,1.052.471,1.052,1.052v1.7708"></path> <circle class="c" cx="31.03" cy="18.1267" r=".75"></circle> <circle class="c" cx="36.4634" cy="18.1267" r=".75"></circle> <circle class="c" cx="33.75" cy="15.4132" r=".75"></circle> <circle class="c" cx="33.75" cy="20.8401" r=".785"></circle> </g> <g> <path class="d" d="m20.8882,34.6779s.2691,3.6048,4.1955,5.1496c-1.5126-2.8643,2.3172-5.4068,2.2206-7.2091.7724,1.4482.2896,3.0574.2896,3.0574,0,0,4.0551-5.3746-2.3816-8.6895,1.0299,1.8988,1.223,1.9632,1.223,3.7976"></path> <path class="d" d="m26.3767,29.597s-2.9022,2.0559-2.5803,4.7593c-1.3267-1.3611-1.2874-1.931-1.223-3.8942-2.1715-.0043-.8818-2.2473.2575-3.4758-4.5378,1.7057-4.2804,6.5654-2.4459,8.9148.4184-1.6092,1.3302-2.1501,1.3302-2.1501"></path> </g> </g></svg>
+                    <img style="width: 40px;" src="{% static 'home/images/znew/2.png' %}" alt="">
                     Game
                 </a>
             </li>
-            <li>
+            <li class="rgto">
                 <a href="{% url 'invition' %}">
-                    <svg width="27px" height="27px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M13 3C13 2.44772 12.5523 2 12 2C11.4477 2 11 2.44772 11 3V11H3C2.44772 11 2 11.4477 2 12C2 12.5523 2.44772 13 3 13H11V21C11 21.5523 11.4477 22 12 22C12.5523 22 13 21.5523 13 21V13H21C21.5523 13 22 12.5523 22 12C22 11.4477 21.5523 11 21 11H13V3Z" fill="#777880"></path> </g></svg>
+                    <img style="width: 45px;" src="{% static 'home/images/znew/3.png' %}" alt="">
                     Invitation
                 </a>
             </li>
-            <li>
-                <a href="{% url 'profile' %}">
-                    <i class="icon icon-wallet"></i>
+            <li class="active">
+                <a href="{{profile}}">
+                    <img style="width: 40px;" src="{% static 'home/images/znew/4.png' %}" alt="">
                     Profile
                 </a>
             </li>
         </ul>
-    </div>
-
-    <!-- account -->
-    <div class="modal fade action-sheet" id="accountWallet">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span>Wallet</span>
-                    <span class="icon-cancel" data-bs-dismiss="modal"></span>
-                </div>
-                <ul class="mt-20 pb-16">
-                    <li data-bs-dismiss="modal"><div class="d-flex justify-content-between align-items-center gap-8 text-large item-check active dom-value">Account 1 <i class="icon icon-check-circle"></i> </div></li>
-                    <li class="mt-4" data-bs-dismiss="modal"><div class="d-flex  justify-content-between gap-8 text-large item-check dom-value">Account 2 <i class="icon icon-check-circle"></i></div></li>
-                </ul>
-            </div>
-            
-        </div>
-    </div>
-    <!-- history -->
-    <div class="modal fade modalRight" id="walletHistory">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="header fixed-top bg-surface d-flex justify-content-center align-items-center">
-                    <span class="left" data-bs-dismiss="modal"  aria-hidden="true"><i class="icon-left-btn"></i></span>
-                    <h3>History</h3>
-                    <span class="right text-white btn-filter-history"><i class="icon-funnel"></i></span>
-                </div>
-                <div class="overflow-auto pt-45 pb-16">
-                    <div class="tf-container">
-                        <ul class="mt-4">
-                            <li>
-                                <a href="#" class="coin-item style-1 gap-12 bg-menuDark">
-                                    <img src="{% static 'home/images/coin/coin-1.jpg' %} " alt="img" class="img">
-                                    <div class="content">
-                                        <div class="title">
-                                            <p class="mb-4 text-large">Bitcoin</p>
-                                            <span class="text-secondary">11:34 AM</span>
-                                        </div>
-                                        <div class="box-price">
-                                            <p class="text-small mb-4"><span class="text-primary">+</span> BTC 0.0056</p>
-                                            <p class="text-end"><span class="text-red">-</span> $950.50</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="mt-8">
-                                <a href="#" class="coin-item style-1 gap-12 bg-menuDark">
-                                    <img src="{% static 'home/images/coin/coin-2.jpg' %} " alt="img" class="img">
-                                    <div class="content">
-                                        <div class="title">
-                                            <p class="mb-4 text-large">Withdraw</p>
-                                            <span class="text-secondary">1:12 PM</span>
-                                        </div>
-                                           
-                                        <p class="text-small"><span class="text-red">-</span> 2,700.00</p>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="mt-8">
-                                <a href="#" class="coin-item style-1 gap-12 bg-menuDark">
-                                    <img src="{% static 'home/images/coin/coin-3.jpg' %} " alt="img" class="img">
-                                    <div class="content">
-                                        <div class="title">
-                                            <p class="mb-4 text-large">Ethereum</p>
-                                            <span class="text-secondary">12:00 AM</span>
-                                        </div>
-                                        <div class="box-price">
-                                            <p class="text-small mb-4"><span class="text-primary">+</span> ETH 1,498</p>
-                                            <p class="text-end"><span class="text-red">-</span> $12948,68</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="mt-8">
-                                <a href="#" class="coin-item style-1 gap-12 bg-menuDark">
-                                    <img src="{% static 'home/images/coin/coin-2.jpg' %} " alt="img" class="img">
-                                    <div class="content">
-                                        <div class="title">
-                                            <p class="mb-4 text-large">Deposit</p>
-                                            <span class="text-secondary">11:34 AM</span>
-                                        </div>
-                                        <p class="text-small"><span class="text-primary">+</span> 2,700.00</p>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="mt-8">
-                                <a href="#" class="coin-item style-1 gap-12 bg-menuDark">
-                                    <img src="{% static 'home/images/coin/coin-1.jpg' %} " alt="img" class="img">
-                                    <div class="content">
-                                        <div class="title">
-                                            <p class="mb-4 text-large">Bitcoin</p>
-                                            <span class="text-secondary">11:34 AM</span>
-                                        </div>
-                                        <div class="box-price">
-                                            <p class="text-small mb-4"><span class="text-primary">+</span> BTC 1,45</p>
-                                            <p class="text-end"><span class="text-red">-</span> $12847.594</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="mt-8">
-                                <a href="#" class="coin-item style-1 gap-12 bg-menuDark">
-                                    <img src="{% static 'home/images/coin/coin-1.jpg' %} " alt="img" class="img">
-                                    <div class="content">
-                                        <div class="title">
-                                            <p class="mb-4 text-large">Bitcoin</p>
-                                            <span class="text-secondary">11:34 AM</span>
-                                        </div>
-                                        <div class="box-price">
-                                            <p class="text-small mb-4"><span class="text-primary">+</span> BTC 32,766</p>
-                                            <p class="text-end"><span class="text-red">-</span> $23.0983,28</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="mt-8">
-                                <a href="#" class="coin-item style-1 gap-12 bg-menuDark">
-                                    <img src="{% static 'home/images/coin/coin-3.jpg' %} " alt="img" class="img">
-                                    <div class="content">
-                                        <div class="title">
-                                            <p class="mb-4 text-large">Ethereum</p>
-                                            <span class="text-secondary">12:00 AM</span>
-                                        </div>
-                                        <div class="box-price">
-                                            <p class="text-small mb-4"><span class="text-primary">+</span> ETH 1,498</p>
-                                            <p class="text-end"><span class="text-red">-</span> $12948,68</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="mt-8">
-                                <a href="#" class="coin-item style-1 gap-12 bg-menuDark">
-                                    <img src="{% static 'home/images/coin/coin-4.jpg' %} " alt="img" class="img">
-                                    <div class="content">
-                                        <div class="title">
-                                            <p class="mb-4 text-large">Anchor</p>
-                                            <span class="text-secondary">12:00 AM</span>
-                                        </div>
-                                        <div class="box-price">
-                                            <p class="text-small mb-4"><span class="text-primary">+</span> ETH 1,498</p>
-                                            <p class="text-end"><span class="text-red">-</span> $12948,68</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-               
-            </div>
-        </div>
-    </div>
-    <!-- filter history -->
-    <div class="modal fade action-sheet" id="filterHistory">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span>Filters</span>
-                    <span class="icon-cancel" data-bs-dismiss="modal" aria-hidden="true"></span>
-                </div>
-                <div class="modal-body">
-                    <div class="text-button fw-6 text-white">Time</div>
-                    <ul class="grid-2 rcg-12-16 mt-16">
-                        <li><a href="javascript:void(0);" class="tf-btn xs line active text-secondary item-time">All</a></li>
-                        <li><a href="javascript:void(0);" class="tf-btn xs line text-secondary item-time">24 Hours</a></li>
-                        <li><a href="javascript:void(0);" class="tf-btn xs line text-secondary item-time">7 Days</a></li>
-                        <li><a href="javascript:void(0);" class="tf-btn xs line text-secondary item-time">12 Days </a></li>
-                        <li><a href="javascript:void(0);" class="tf-btn xs line text-secondary item-time">30 Days</a></li>
-                        <li><a href="javascript:void(0);" class="tf-btn xs line text-secondary item-time">3 Month</a></li>
-                        <li><a href="javascript:void(0);" class="tf-btn xs line text-secondary item-time">6 Month</a></li>
-                        <li><a href="javascript:void(0);" class="tf-btn xs line text-secondary item-time">12 Month</a></li>
-                    </ul>
-                    <div class="text-button fw-6 text-white mt-16">Categories</div>
-                    <ul class="grid-2 rcg-12-16 mt-16">
-                        <li><a href="javascript:void(0);" class="tf-btn xs line active text-secondary item-category">All</a></li>
-                        <li><a href="javascript:void(0);" class="tf-btn xs line text-secondary item-category">Transfer money</a></li>
-                        <li><a href="javascript:void(0);" class="tf-btn xs line text-secondary item-category">Receive money</a></li>
-                    </ul>
-                    <div class="mt-16 pt-16 line-t grid-2 gap-16">
-                        <a href="javascript:void(0);" class="tf-btn sm secondary" data-bs-dismiss="modal">Delete</a>
-                        <a href="javascript:void(0);" class="tf-btn sm primary" data-bs-dismiss="modal">Apply</a>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
     </div>
     <!-- recipient -->
     <div class="modal fade modalRight" id="recipient">
@@ -345,9 +170,12 @@
                 <div class="overflow-auto pt-45 pb-16">
                     <div class="tf-container">
                         <ul class="mt-12 grid-4 rg-16 cg-25">
-                            
+                            {% if not invitees5  %}
+                            <li>
+                                <p>invite is None</p>
+                            </li>
+                            {% endif %}
                             {% for invite in invitees %}
-                                
                             
                             <li>
                                 <a href="choose-payment.html" class="tf-list-item d-flex flex-column gap-4 align-items-center">
@@ -498,7 +326,6 @@
                         </ul>
                     </div>
                 </div>
-               
             </div>
         </div>
     </div>
