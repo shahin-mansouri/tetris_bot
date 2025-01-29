@@ -59,7 +59,27 @@
     <div class="sdfgjkl">
         <div class="sdfgjkl12">
             <img style="width: 30px;" src="{% static 'home/images/znew/danger.png' %}" alt="">
-            <h5>youtube</h5>
+            <!-- <h5>youtube</h5> -->
+                {% if youtube_subscription %}
+                    <!-- اگر کاربر در Google لاگین کرده باشد -->
+                    {% if youtube_subscription.is_sub %}
+                        <!-- اگر کاربر سابسکرایب کرده باشد -->
+                        <a href="https://www.youtube.com/channel/UCvwZz0LSe3CRMdOgh-Jil4g">
+                            <h5>youtube</h5>
+                        </a>
+                    {% else %}
+                        <!-- اگر کاربر سابسکرایب نکرده باشد -->
+                        <a href="{% url 'check_subscription_status' %}" target="_blank">
+                            <h5>youtube</h5>
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <!-- اگر کاربر در Google لاگین نکرده باشد -->
+                    <a href="{% url 'login_with_google' %}">
+                        <h5>youtube</h5>
+                    </a>
+                {% endif %}
+
         </div>
         <div class="sdfgjkl1">
             <img style="width: 30px;" src="{% static 'home/images/znew/danger.png' %}" alt="">
