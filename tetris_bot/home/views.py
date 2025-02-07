@@ -20,7 +20,9 @@ def home(request):
             context['next_day'] = coins.is_valid()
 
         # اطلاعات مربوط به نوتیفیکیشن‌ها
-        context['user_notifications'] = UserNotification.objects.filter(user=user)
+        notifications = UserNotification.objects.filter(user=user)
+        context['user_notifications'] = notifications
+        context['unread_notif'] = len([notification for notification in notifications if not notification.is_read])
 
         # بررسی لاگین بودن کاربر در Google و وضعیت سابسکرایب
         youtube_subscription = Youtube.objects.filter(user=user).first()

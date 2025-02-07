@@ -27,11 +27,13 @@ DEBUG = False
 
 # ALLOWED_HOSTS = []
 # ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok-free.app']
-ALLOWED_HOSTS = ['89.106.206.46', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = ['https://app.tetragametetris.com']
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'youtube_auth.apps.YoutubeAuthConfig',
     'notifications.apps.NotificationsConfig',
     'awards.apps.AwardsConfig',
@@ -51,6 +53,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -60,6 +63,15 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "https://tetragametetris.com",  # دامنه‌های مجاز را اینجا وارد کنید
+    "https://app.tetragametetris.com",
+    "http://localhost:8080",
+    "http://127.0.0.1:9000",
+]
+
 
 ROOT_URLCONF = 'tetris_bot.urls'
 
