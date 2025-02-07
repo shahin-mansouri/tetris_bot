@@ -28,12 +28,31 @@
         align-items: center;
         justify-content: center;
     }
+
+    .box-noti::after {
+        content: "{{unread_notif}}";
+        font-family: "Poppins", sans-serif;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 12px;
+        height: 12px;
+        color: var(--white);
+        background-color: var(--red);
+        font-size: 11px;
+        font-weight: 400;
+        line-height: 13px;
+        border-radius: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        }
 </style>
 
 <body>
     <!-- preloade -->
     <div class="preload preload-container">
-        <div class="preload-logo" style="background-image: url('{% static 'home/images/znew/logo.png' %}')">
+        <div class="preload-logo" style="background-image: url('{% static 'home/images/znew/logo.PNG' %}')">
             <div class="spinner"></div>
         </div>
     </div>
@@ -55,7 +74,7 @@
 </div>
 </div>
 <div class="element-sh">
-    <img class="element-sha" style="display: block; margin: 0 auto; width: 40%;" src="{% static 'home/images/znew/coin.png' %}" alt="">
+    <img class="element-sha" style="display: block; margin: 0 auto; width: 40%;" src="{% static 'home/images/znew/coin.PNG' %}" alt="">
     <div class="sdfgjkl">
         <div class="sdfgjkl12">
             <img style="width: 30px;" src="{% static 'home/images/znew/danger.png' %}" alt="">

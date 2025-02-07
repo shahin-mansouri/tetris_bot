@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ورود خودکار</title>
+    <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
+</head>
+<body>
+    {% csrf_token %}
+    {% comment %} <h1>در حال ورود...</h1> {% endcomment %}
+    <pre id="log" style="display: none"></pre>
+
+
+
+    <script>
+        function logMessage(message) {
+            document.getElementById("log").textContent += message + "\n";
+        }
+
+        function autoLogin() {
+
+            logMessage("🔄 شروع فرآیند لاگین...");
+            
+            // if (typeof window.Telegram !== "undefined" && window.Telegram.WebApp) {
+                logMessage("✅ Telegram.WebApp موجود است.");
+                logMessage("ℹ️ مقدار initDataUnsafe:");
+                // logMessage(JSON.stringify(window.Telegram.WebApp.initDataUnsafe, null, 2));
+                const initData = Telegram.WebApp.initData;
+                logMessage(initData);
+                logMessage(Boolean(initData));
+
+                // if (window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
+                    let user = window.Telegram.WebApp.initDataUnsafe.user;
+                    logMessage("✅ اطلاعات کاربر دریافت شد:");
+                    logMessage(JSON.stringify(user, null, 2));
+
+                    fetch("{% url 'verify_user' %}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": getCsrfToken(),
+                        },
+                        body: JSON.stringify(user),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        logMessage("📨 پاسخ سرور دریافت شد:");
+                        logMessage(JSON.stringify(data, null, 2));
+                        if (data.success) {
+                            logMessage("✅ ورود موفق! انتقال به داشبورد...");
+                            {% comment %} window.location.href = "{% url 'home' %}"; {% endcomment %}
+                            
+                            redirect = String(data.redirect)
+                            window.location.href = `/${redirect}`;
+                        } else {
+                            logMessage("❌ خطا در ورود: " + (data.error || "نامشخص"));
+                        }
+                    })
+                    .catch(error => logMessage("⚠️ خطا در ارسال درخواست: " + error));
+                //  }else {
+                //     logMessage("❌ اطلاعات کاربر یافت نشد.");
+                // }
+            // } else {
+            //     logMessage("❌ Telegram.WebApp شناسایی نشد!");
+            // }
+        }
+
+        function getCsrfToken() {
+          return document.querySelector('[name=csrfmiddlewaretoken]').value;
+        }
+
+        document.addEventListener("DOMContentLoaded", autoLogin);
+    </script>
+</body>
+</html>

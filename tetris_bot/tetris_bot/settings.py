@@ -23,15 +23,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-)e+xw&vh9h6=_=$av@q1!)l0co#o8ij%b7n8n^g)5y5lavol#&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok-free.app']
-# ALLOWED_HOSTS = ['46.249.99.31', 'localhost', '127.0.0.1']
-CSRF_TRUSTED_ORIGINS = ['https://*.ngrok-free.app']
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok-free.app']
+ALLOWED_HOSTS = ['*']
+
+CSRF_TRUSTED_ORIGINS = ['https://app.tetragametetris.com']
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'youtube_auth.apps.YoutubeAuthConfig',
     'x_auth.apps.XAuthConfig',
     'notifications.apps.NotificationsConfig',
@@ -47,11 +49,14 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    "whitenoise.runserver_nostatic",
     'django.contrib.staticfiles',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -59,6 +64,15 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "https://tetragametetris.com",  # دامنه‌های مجاز را اینجا وارد کنید
+    "https://app.tetragametetris.com",
+    "http://localhost:8080",
+    "http://127.0.0.1:9000",
+]
+
 
 ROOT_URLCONF = 'tetris_bot.urls'
 
@@ -152,6 +166,24 @@ import os
 MEDIA_URL = '/media/' 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
 
+
+
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+
+STORAGES = {
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+        'OPTIONS': {
+            'location': MEDIA_ROOT,  # فایل‌های آپلود شده در مسیر MEDIA_ROOT ذخیره می‌شوند.
+        },
+    },
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+    },
+}
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 # تنظیمات توییتر
 # bearer token: AAAAAAAAAAAAAAAAAAAAAGnIyQEAAAAAC3aRjjglfqr9cqtTiyy0ImtCBTw%3DMczvbvE26TJU7mpmkLB1FAl1Yv1yrV08Ea6x9ymGj8kdhhtu7d
