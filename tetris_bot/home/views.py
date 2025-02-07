@@ -5,6 +5,8 @@ from accounts.models import TelegramUser
 from .models import Coin
 from notifications.models import Notification, UserNotification
 from youtube_auth.models import Youtube
+# from x_auth.models import TwitterSubscription
+
 
 
 def home(request):
@@ -25,6 +27,11 @@ def home(request):
         # بررسی لاگین بودن کاربر در Google و وضعیت سابسکرایب
         youtube_subscription = Youtube.objects.filter(user=user).first()
         context['youtube_subscription'] = youtube_subscription
+
+        # بررسی اشتراک توییتر
+        # twitter_subscription = TwitterSubscription.objects.filter(user=user).first()
+        # context['twitter_subscription'] = twitter_subscription
+        # context['TWITTER_HANDLE'] = 'ShahinManso'  # اکانت توییتر شما
 
         # بررسی پارامتر create
         create_param = request.GET.get('create')

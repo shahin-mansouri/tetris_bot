@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+# yV6uzymfb95#_ZKP
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,13 +26,14 @@ SECRET_KEY = 'django-insecure-)e+xw&vh9h6=_=$av@q1!)l0co#o8ij%b7n8n^g)5y5lavol#&
 DEBUG = True
 
 # ALLOWED_HOSTS = []
-# ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok-free.app']
-ALLOWED_HOSTS = ['46.249.99.31', 'localhost', '127.0.0.1']
-
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok-free.app']
+# ALLOWED_HOSTS = ['46.249.99.31', 'localhost', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://*.ngrok-free.app']
 # Application definition
 
 INSTALLED_APPS = [
     'youtube_auth.apps.YoutubeAuthConfig',
+    'x_auth.apps.XAuthConfig',
     'notifications.apps.NotificationsConfig',
     'awards.apps.AwardsConfig',
     'verify_token.apps.VerifyTokenConfig',
@@ -151,3 +152,16 @@ import os
 MEDIA_URL = '/media/' 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
 
+
+# تنظیمات توییتر
+# bearer token: AAAAAAAAAAAAAAAAAAAAAGnIyQEAAAAAC3aRjjglfqr9cqtTiyy0ImtCBTw%3DMczvbvE26TJU7mpmkLB1FAl1Yv1yrV08Ea6x9ymGj8kdhhtu7d
+API_KEY = 'qmIDbwXzADLKbjme5e2g2VFHk'
+API_SECRET_KEY = 'kKjH0XF5UwJtcYhGuGw56effKgfgwvSlCsckJsGXhhI2L9pRK6'
+ACCESS_TOKEN = '1881635679135780864-n8KWymi5XGwdqbgVmNdtCCWDIwxqYU'
+ACCESS_TOKEN_SECRET = '1ueAu6pr23R2WAfA55OUy4WakHLcwzBdibPidAx9Jded5'
+# CALLBACK_URI = 'http://127.0.0.1:8000/x-auth/callback/'  # مسیر بازگشت
+TWITTER_CALLBACK_URI = 'https://4f7a-149-36-50-236.ngrok-free.app/x-auth/callback/'  # مسیر بازگشت
+TWITTER_CLIENT_ID = 'WWV2QjhXbEU0OTExeXRONTR3SHU6MTpjaQ'
+TWITTER_CLIENT_SECRET = 'EX4RtItJx8q7bGHm1Yg1rlF5JANDvl9ijEpZSdmDFuii8rIJwn'
+TWITTER_HANDLE = 'ShahinManso'
+TWITTER_BEARER_TOKEN = 'AAAAAAAAAAAAAAAAAAAAAGnIyQEAAAAAC3aRjjglfqr9cqtTiyy0ImtCBTw%3DMczvbvE26TJU7mpmkLB1FAl1Yv1yrV08Ea6x9ymGj8kdhhtu7d'
