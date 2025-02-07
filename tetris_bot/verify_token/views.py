@@ -66,7 +66,7 @@ def verify_user(request):
         first_name = data['first_name']
         last_name = data['last_name']
 
-        user, _ = TelegramUser.objects.get_or_create(telegram_id=telegram_id, defaults={
+        user, create = TelegramUser.objects.get_or_create(telegram_id=telegram_id, defaults={
                 'first_name': first_name or "unknown_first_name",
                 'last_name': last_name or "unknown_last_name",
                 'username': username or "unknown_user",
@@ -74,12 +74,17 @@ def verify_user(request):
 
         login(request, user)
         print("✅ ورود موفق برای:", username)
-        return JsonResponse({'success': True})
+        if create:
+            print('create', create)
+            return JsonResponse({'success': True, 'redirect': 'verify_token/wellcome2'})
+        return JsonResponse({'success': True, 'redirect': 'home'})
 
     print("❌ درخواست نامعتبر (نه POST)")
     return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)
 
 
+def waiting_to_login(request):
+    return render(request, 'verify_token/to_login.html')
 
 
 class Wellcome(TemplateView):
