@@ -356,7 +356,8 @@
     </script>
     <script>
       function sendGameData(score, time) {
-        const url = `/game/end_game/${score}/${time}/`;
+
+        const url = `/game/end_game/${score}/${300-time}/`;
     
         fetch(url, {
             method: 'POST',
