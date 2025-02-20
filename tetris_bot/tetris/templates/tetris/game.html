@@ -2,111 +2,323 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Tetris Mobile</title>
     <style>
         body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #000;
-    color: #fff;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    flex-direction: column;
-}
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            flex-direction: column;
+        }
 
-.menu {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-}
+        .menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
 
-.menu h1 {
-    font-size: 48px;
-    margin-bottom: 20px;
-}
+        .menu h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
 
-.menu button {
-    padding: 10px 20px;
-    font-size: 20px;
-    cursor: pointer;
-}
+        .menu button {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
 
-.game-container {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-}
+        .game-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
 
-.game-grid {
-    display: grid;
-    grid-template-rows: repeat(20, 30px);
-    grid-template-columns: repeat(10, 30px);
-    gap: 1px;
-    background-color: #333;
-}
+        .game-grid {
+            display: grid;
+            grid-template-rows: repeat(20, 15px);
+            grid-template-columns: repeat(10, 15px);
+            gap: 1px;
+            background-color: #333;
+        }
 
-.cell {
-    width: 30px;
-    height: 30px;
-    background-color: #000;
-}
+        .cell {
+            width: 15px;
+            height: 15px;
+            background-color: #000;
+        }
 
-.lTetromino { background-color: #FFA500; }
-.zTetromino { background-color: #FF0000; }
-.tTetromino { background-color: #800080; }
-.oTetromino { background-color: #FFFF00; }
-.iTetromino { background-color: #00FFFF; }
+        .lTetromino { background-color: #FFA500; }
+        .zTetromino { background-color: #FF0000; }
+        .tTetromino { background-color: #800080; }
+        .oTetromino { background-color: #FFFF00; }
+        .iTetromino { background-color: #00FFFF; }
 
-.score-board {
-    margin-top: 20px;
-    font-size: 20px;
-}
+        .score-board {
+            margin-top: 20px;
+            font-size: 16px;
+        }
 
-.controls {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
-}
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
 
-.controls button {
-    padding: 10px;
-    font-size: 20px;
-    cursor: pointer;
-}
+        .controls button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
 
-#pause-button {
-    margin-top: 10px;
-    cursor: pointer;
-}
-
+        #pause-button {
+            margin-top: 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div class="menu" id="start-menu">
         <h1>Tetris Mobile</h1>
-        <button id="start-button">Start Game
-     ▶ </button>
+        <button id="start-button">Start Game ▶</button>
     </div>
 
     <div class="game-container" id="game-container">
         <div class="game-grid" id="game-grid"></div>
         <div class="score-board">
-    <p id="timer">05:00</p>
+            <p id="timer">05:00</p>
+            <p>Score: <span id="score">0</span></p>
+            <button id="pause-button">Pause</button>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="left-button">🡄</button>
+        <button id="rotate-button">🔄</button>
+        <button id="right-button">🡆</button>
+        <button id="down-button">🡇</button>
+    </div>
 
     <script>
+        const gameGrid = document.getElementById('game-grid');
+        const scoreDisplay = document.getElementById('score');
+        const startButton = document.getElementById('start-button');
+        const pauseButton = document.getElementById('pause-button');
+        const startMenu = document.getElementById('start-menu');
+        const gameContainer = document.getElementById('game-container');
+        const leftButton = document.getElementById('left-button');
+        const rotateButton = document.getElementById('rotate-button');
+        const rightButton = document.getElementById('right-button');
+        const downButton = document.getElementById('down-button');
+
+        const width = 10;
+        let score = 0;
+        let timerId;
+        let isPaused = false;
+        let currentPosition = 4;
+        let currentRotation = 0;
+        let speed = 1000; // سرعت اولیه
+
+        const lTetromino = [
+            [1, width + 1, width * 2 + 1, 2],
+            [width, width + 1, width + 2, width * 2 + 2],
+            [1, width + 1, width * 2 + 1, width * 2],
+            [width, width * 2, width * 2 + 1, width * 2 + 2]
+        ];
+
+        const zTetromino = [
+            [0, width, width + 1, width * 2 + 1],
+            [width + 1, width + 2, width * 2, width * 2 + 1],
+            [0, width, width + 1, width * 2 + 1],
+            [width + 1, width + 2, width * 2, width * 2 + 1]
+        ];
+
+        const tTetromino = [
+            [1, width, width + 1, width + 2],
+            [1, width + 1, width + 2, width * 2 + 1],
+            [width, width + 1, width + 2, width * 2 + 1],
+            [1, width, width + 1, width * 2 + 1]
+        ];
+
+        const oTetromino = [
+            [0, 1, width, width + 1],
+            [0, 1, width, width + 1],
+            [0, 1, width, width + 1],
+            [0, 1, width, width + 1]
+        ];
+
+        const iTetromino = [
+            [1, width + 1, width * 2 + 1, width * 3 + 1],
+            [width, width + 1, width + 2, width + 3],
+            [1, width + 1, width * 2 + 1, width * 3 + 1],
+            [width, width + 1, width + 2, width + 3]
+        ];
+
+        const theTetrominoes = [
+            { shape: lTetromino, className: 'lTetromino' },
+            { shape: zTetromino, className: 'zTetromino' },
+            { shape: tTetromino, className: 'tTetromino' },
+            { shape: oTetromino, className: 'oTetromino' },
+            { shape: iTetromino, className: 'iTetromino' }
+        ];
+
+        let randomTetromino = Math.floor(Math.random() * theTetrominoes.length);
+        let currentTetromino = theTetrominoes[randomTetromino].shape[currentRotation];
+        let currentClass = theTetrominoes[randomTetromino].className;
+
+        function draw() {
+            currentTetromino.forEach(index => {
+                gameGrid.children[currentPosition + index].classList.add('active', currentClass);
+            });
+        }
+
+        function undraw() {
+            currentTetromino.forEach(index => {
+                gameGrid.children[currentPosition + index].classList.remove('active', currentClass);
+            });
+        }
+
+        function moveDown() {
+            if (!isPaused) {
+                undraw();
+                currentPosition += width;
+                draw();
+                freeze();
+            }
+        }
+
+        function freeze() {
+            if (currentTetromino.some(index => gameGrid.children[currentPosition + index + width].classList.contains('taken'))) {
+                currentTetromino.forEach(index => gameGrid.children[currentPosition + index].classList.add('taken'));
+                randomTetromino = Math.floor(Math.random() * theTetrominoes.length);
+                currentTetromino = theTetrominoes[randomTetromino].shape[currentRotation];
+                currentClass = theTetrominoes[randomTetromino].className;
+                currentPosition = 4;
+                draw();
+                addScore();
+                gameOver();
+            }
+        }
+
+        function moveLeft() {
+            if (!isPaused) {
+                undraw();
+                const isAtLeftEdge = currentTetromino.some(index => (currentPosition + index) % width === 0);
+                if (!isAtLeftEdge) currentPosition -= 1;
+                if (currentTetromino.some(index => gameGrid.children[currentPosition + index].classList.contains('taken'))) {
+                    currentPosition += 1;
+                }
+                draw();
+            }
+        }
+
+        function moveRight() {
+            if (!isPaused) {
+                undraw();
+                const isAtRightEdge = currentTetromino.some(index => (currentPosition + index) % width === width - 1);
+                if (!isAtRightEdge) currentPosition += 1;
+                if (currentTetromino.some(index => gameGrid.children[currentPosition + index].classList.contains('taken'))) {
+                    currentPosition -= 1;
+                }
+                draw();
+            }
+        }
+
+        function rotate() {
+            if (!isPaused) {
+                undraw();
+                currentRotation++;
+                if (currentRotation === currentTetromino.length) {
+                    currentRotation = 0;
+                }
+                currentTetromino = theTetrominoes[randomTetromino].shape[currentRotation];
+                draw();
+            }
+        }
+
+        function addScore() {
+            for (let i = 0; i < 199; i += width) {
+                const row = [i, i + 1, i + 2, i + 3, i + 4, i + 5, i + 6, i + 7, i + 8, i + 9];
+                if (row.every(index => gameGrid.children[index].classList.contains('taken'))) {
+                    score += 10;
+                    scoreDisplay.innerHTML = score;
+                    row.forEach(index => {
+                        gameGrid.children[index].classList.remove('taken', 'active', currentClass);
+                    });
+                    const squaresRemoved = Array.from(gameGrid.children).splice(i, width);
+                    gameGrid.prepend(...squaresRemoved);
+                }
+            }
+        }
+
+        function gameOver() {
+            if (currentTetromino.some(index => gameGrid.children[currentPosition + index].classList.contains('taken'))) {
+                scoreDisplay.innerHTML = 'end';
+                clearInterval(timerId);
+                clearInterval(timerInterval);
+            }
+        }
+
+        document.addEventListener('keyup', control);
+
+        function control(e) {
+            if (e.keyCode === 37) {
+                moveLeft();
+            } else if (e.keyCode === 38) {
+                rotate();
+            } else if (e.keyCode === 39) {
+                moveRight();
+            } else if (e.keyCode === 40) {
+                moveDown();
+            }
+        }
+
+        leftButton.addEventListener('click', moveLeft);
+        rotateButton.addEventListener('click', rotate);
+        rightButton.addEventListener('click', moveRight);
+        downButton.addEventListener('click', moveDown);
+
+        function createGrid() {
+            for (let i = 0; i < 200; i++) {
+                const div = document.createElement('div');
+                div.classList.add('cell');
+                gameGrid.appendChild(div);
+            }
+            for (let i = 0; i < 10; i++) {
+                const div = document.createElement('div');
+                div.classList.add('taken');
+                gameGrid.appendChild(div);
+            }
+        }
+
+        createGrid();
+
+        function startGame() {
+            startMenu.style.display = 'none';
+            gameContainer.style.display = 'flex';
+            timerId = setInterval(moveDown, speed);
+            draw();
+            setInterval(updateSpeed, 30000); // هر 30 ثانیه سرعت را افزایش دهید
+        }
+
+        startButton.addEventListener('click', startGame);
+
         let time = 300; // 5 دقیقه (300 ثانیه)
-        
+        let timerInterval = setInterval(updateTimer, 1000);
+
         function updateTimer() {
             let minutes = Math.floor(time / 60);
             let seconds = time % 60;
 
-            // فرمت زمان به صورت دو رقمی
             if (seconds < 10) {
                 seconds = '0' + seconds;
             }
@@ -121,233 +333,82 @@
             }
         }
 
-        let timerInterval = setInterval(updateTimer, 1000);
+        function updateSpeed() {
+            if (speed > 200) { // حداقل سرعت 200 میلی‌ثانیه
+                speed -= 50; // کاهش سرعت به میزان 50 میلی‌ثانیه هر 30 ثانیه
+                clearInterval(timerId);
+                timerId = setInterval(moveDown, speed);
+            }
+        }
+
+        pauseButton.addEventListener('click', () => {
+            if (isPaused) {
+                timerId = setInterval(moveDown, speed); // شروع مجدد بازی
+                timerInterval = setInterval(updateTimer, 1000); // شروع مجدد تایمر
+                pauseButton.textContent = 'Pause';
+            } else {
+                clearInterval(timerId); // متوقف کردن بازی
+                clearInterval(timerInterval); // متوقف کردن تایمر
+                pauseButton.textContent = 'Resume';
+            }
+            isPaused = !isPaused;
+        });
     </script>
-
-            <p>Score: <span id="score">0</span></p>
-            <button id="pause-button">Pause</button>
-        </div>
-    </div>
-
-    <div class="controls">
-        <button id="left-button">🡄</button>
-        <button id="rotate-button">🔄</button>
-        <button id="right-button">🡆</button>
-        <button id="down-button">🡇</button>
-    </div>
-  <!-- <h4> Created By THEYAROX GAMING</h4> -->
-
     <script>
-        const gameGrid = document.getElementById('game-grid');
-const scoreDisplay = document.getElementById('score');
-const startButton = document.getElementById('start-button');
-const pauseButton = document.getElementById('pause-button');
-const startMenu = document.getElementById('start-menu');
-const gameContainer = document.getElementById('game-container');
-const leftButton = document.getElementById('left-button');
-const rotateButton = document.getElementById('rotate-button');
-const rightButton = document.getElementById('right-button');
-const downButton = document.getElementById('down-button');
+      function sendGameData(score, time) {
 
-const width = 10;
-let score = 0;
-let timerId;
-let isPaused = false;
-let currentPosition = 4;
-let currentRotation = 0;
-
-// The Tetrominoes
-const lTetromino = [
-  [1, width + 1, width * 2 + 1, 2],
-  [width, width + 1, width + 2, width * 2 + 2],
-  [1, width + 1, width * 2 + 1, width * 2],
-  [width, width * 2, width * 2 + 1, width * 2 + 2]
-];
-
-const zTetromino = [
-  [0, width, width + 1, width * 2 + 1],
-  [width + 1, width + 2, width * 2, width * 2 + 1],
-  [0, width, width + 1, width * 2 + 1],
-  [width + 1, width + 2, width * 2, width * 2 + 1]
-];
-
-const tTetromino = [
-  [1, width, width + 1, width + 2],
-  [1, width + 1, width + 2, width * 2 + 1],
-  [width, width + 1, width + 2, width * 2 + 1],
-  [1, width, width + 1, width * 2 + 1]
-];
-
-const oTetromino = [
-  [0, 1, width, width + 1],
-  [0, 1, width, width + 1],
-  [0, 1, width, width + 1],
-  [0, 1, width, width + 1]
-];
-
-const iTetromino = [
-  [1, width + 1, width * 2 + 1, width * 3 + 1],
-  [width, width + 1, width + 2, width + 3],
-  [1, width + 1, width * 2 + 1, width * 3 + 1],
-  [width, width + 1, width + 2, width + 3]
-];
-
-const theTetrominoes = [
-  { shape: lTetromino, className: 'lTetromino' },
-  { shape: zTetromino, className: 'zTetromino' },
-  { shape: tTetromino, className: 'tTetromino' },
-  { shape: oTetromino, className: 'oTetromino' },
-  { shape: iTetromino, className: 'iTetromino' }
-];
-
-let randomTetromino = Math.floor(Math.random() * theTetrominoes.length);
-let currentTetromino = theTetrominoes[randomTetromino].shape[currentRotation];
-let currentClass = theTetrominoes[randomTetromino].className;
-
-function draw() {
-  currentTetromino.forEach(index => {
-    gameGrid.children[currentPosition + index].classList.add('active', currentClass);
-  });
-}
-
-function undraw() {
-  currentTetromino.forEach(index => {
-    gameGrid.children[currentPosition + index].classList.remove('active', currentClass);
-  });
-}
-
-function moveDown() {
-  if (!isPaused) {
-    undraw();
-    currentPosition += width;
-    draw();
-    freeze();
-  }
-}
-
-function freeze() {
-  if (currentTetromino.some(index => gameGrid.children[currentPosition + index + width].classList.contains('taken'))) {
-    currentTetromino.forEach(index => gameGrid.children[currentPosition + index].classList.add('taken'));
-    randomTetromino = Math.floor(Math.random() * theTetrominoes.length);
-    currentTetromino = theTetrominoes[randomTetromino].shape[currentRotation];
-    currentClass = theTetrominoes[randomTetromino].className;
-    currentPosition = 4;
-    draw();
-    addScore();
-    gameOver();
-  }
-}
-
-function moveLeft() {
-  if (!isPaused) {
-    undraw();
-    const isAtLeftEdge = currentTetromino.some(index => (currentPosition + index) % width === 0);
-    if (!isAtLeftEdge) currentPosition -= 1;
-    if (currentTetromino.some(index => gameGrid.children[currentPosition + index].classList.contains('taken'))) {
-      currentPosition += 1;
+        const url = `/game/end_game/${score}/${300-time}/`;
+    
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken') // اگر از CSRF Token استفاده می‌کنید
+            },
+            body: JSON.stringify({
+                score: score,
+                time: time
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Data sent successfully');
+            } else {
+                console.error('Failed to send data');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     }
-    draw();
-  }
-}
-
-function moveRight() {
-  if (!isPaused) {
-    undraw();
-    const isAtRightEdge = currentTetromino.some(index => (currentPosition + index) % width === width - 1);
-    if (!isAtRightEdge) currentPosition += 1;
-    if (currentTetromino.some(index => gameGrid.children[currentPosition + index].classList.contains('taken'))) {
-      currentPosition -= 1;
+    
+    // تابع برای دریافت CSRF Token از کوکی‌ها
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
     }
-    draw();
-  }
-}
-
-function rotate() {
-  if (!isPaused) {
-    undraw();
-    currentRotation++;
-    if (currentRotation === currentTetromino.length) {
-      currentRotation = 0;
+    
+    // فراخوانی تابع ارسال داده‌ها در پایان بازی
+    function gameOver() {
+        if (currentTetromino.some(index => gameGrid.children[currentPosition + index].classList.contains('taken'))) {
+            scoreDisplay.innerHTML = 'end';
+            clearInterval(timerId);
+            clearInterval(timerInterval);
+    
+            // ارسال داده‌ها به سرور
+            sendGameData(score, time);
+        }
     }
-    currentTetromino = theTetrominoes[randomTetromino].shape[currentRotation];
-    draw();
-  }
-}
-
-function addScore() {
-  for (let i = 0; i < 199; i += width) {
-    const row = [i, i + 1, i + 2, i + 3, i + 4, i + 5, i + 6, i + 7, i + 8, i + 9];
-    if (row.every(index => gameGrid.children[index].classList.contains('taken'))) {
-      score += 10;
-      scoreDisplay.innerHTML = score;
-      row.forEach(index => {
-        gameGrid.children[index].classList.remove('taken', 'active', currentClass);
-      });
-      const squaresRemoved = Array.from(gameGrid.children).splice(i, width);
-      gameGrid.prepend(...squaresRemoved);
-    }
-  }
-}
-
-function gameOver() {
-  if (currentTetromino.some(index => gameGrid.children[currentPosition + index].classList.contains('taken'))) {
-    scoreDisplay.innerHTML = 'end';
-    clearInterval(timerId);
-  }
-}
-
-document.addEventListener('keyup', control);
-
-function control(e) {
-  if (e.keyCode === 37) {
-    moveLeft();
-  } else if (e.keyCode === 38) {
-    rotate();
-  } else if (e.keyCode === 39) {
-    moveRight();
-  } else if (e.keyCode === 40) {
-    moveDown();
-  }
-}
-
-leftButton.addEventListener('click', moveLeft);
-rotateButton.addEventListener('click', rotate);
-rightButton.addEventListener('click', moveRight);
-downButton.addEventListener('click', moveDown);
-
-function createGrid() {
-  for (let i = 0; i < 200; i++) {
-    const div = document.createElement('div');
-    div.classList.add('cell');
-    gameGrid.appendChild(div);
-  }
-  for (let i = 0; i < 10; i++) {
-    const div = document.createElement('div');
-    div.classList.add('taken');
-    gameGrid.appendChild(div);
-  }
-}
-
-createGrid();
-
-startButton.addEventListener('click', () => {
-  startMenu.style.display = 'none';
-  gameContainer.style.display = 'flex';
-  timerId = setInterval(moveDown, 1000);
-  draw();
-});
-
-pauseButton.addEventListener('click', () => {
-  if (isPaused) {
-    timerId = setInterval(moveDown, 1000);
-    pauseButton.textContent = 'Pause';
-  } else {
-    clearInterval(timerId);
-    pauseButton.textContent = 'Resume';
-  }
-  isPaused = !isPaused;
-});
-
     </script>
 </body>
 </html>

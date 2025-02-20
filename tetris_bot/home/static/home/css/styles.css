@@ -1823,7 +1823,7 @@ input[type=text].ip-style2 {
 .box-noti {
   position: relative;
 }
-.box-noti::after {
+/* .box-noti::after {
   content: "2";
   font-family: "Poppins", sans-serif;
   position: absolute;
@@ -1840,7 +1840,7 @@ input[type=text].ip-style2 {
   display: flex;
   align-items: center;
   justify-content: center;
-}
+} */
 
 .trade-box .coin-item.style-1 {
   padding: 0;
@@ -3138,5 +3138,3 @@ input[type=text].ip-style2 {
   margin: 30px;
   padding: 20px;
 }
-
-/*# sourceMappingURL=styles.css.map */

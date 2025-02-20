@@ -3,9 +3,14 @@ from accounts.models import TelegramUser
 from django.db import models
 from django.utils.timezone import now
 
+
+def get_today():
+    return now().date()
+
+
 class TetrisPlay(models.Model):
     user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE, related_name='tetris_sessions')
-    play_date = models.DateField(default=now)
+    play_date = models.DateField(default=get_today)
     duration = models.PositiveIntegerField(default=0)
     score = models.PositiveIntegerField(default=0)
 
