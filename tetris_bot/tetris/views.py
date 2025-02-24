@@ -4,25 +4,27 @@ from django.shortcuts import render, redirect, HttpResponse
 from django.utils.timezone import now
 from .models import TetrisPlay
 from home.models import Coin
+from django.http import JsonResponse
 
 
 def tetris_play(request):
     user = request.user
 
     tetris_session = TetrisPlay.objects.filter(user=user, play_date=now().date()).first()
+    timer = 300 - tetris_session.duration
+    timer = f"{timer // 60}:{timer % 60:02}"
 
     if tetris_session:
-        if tetris_session.duration >= 60:
-            return HttpResponse("You have already played for 60 minutes today.", status=400)
+        if tetris_session.duration >= 300:
+            return HttpResponse("You have already played for 5 minutes today.", status=400)
     else:
 
 
         pass
 
-    return render(request, 'tetris/game.html', {'tetris_session': tetris_session})
+    return render(request, 'tetris/game.html', {'tetris_session': tetris_session, 'timer': timer})
 
 
-from django.http import JsonResponse
 
 
 @csrf_exempt

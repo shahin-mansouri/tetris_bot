@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Tetris Mobile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             display: flex;
@@ -95,17 +96,33 @@
     <div class="game-container" id="game-container">
         <div class="game-grid" id="game-grid"></div>
         <div class="score-board">
-            <p id="timer">05:00</p>
+            {% comment %} <p id="timer">05:00</p> {% endcomment %}
+            <p id="timer">{{timer}}</p>
             <p>Score: <span id="score">0</span></p>
             <button id="pause-button">Pause</button>
         </div>
     </div>
 
     <div class="controls">
-        <button id="left-button">🡄</button>
+        {% comment %} <button id="left-button">🡄</button>
         <button id="rotate-button">🔄</button>
         <button id="right-button">🡆</button>
-        <button id="down-button">🡇</button>
+        <button id="down-button">🡇</button> {% endcomment %}
+        <button id="left-button">
+            <i class="fas fa-arrow-left"></i> <!-- آیکون چپ -->
+        </button>
+    
+        <button id="rotate-button">
+            <i class="fas fa-sync-alt"></i> <!-- آیکون چرخش -->
+        </button>
+    
+        <button id="right-button">
+            <i class="fas fa-arrow-right"></i> <!-- آیکون راست -->
+        </button>
+    
+        <button id="down-button">
+            <i class="fas fa-arrow-down"></i> <!-- آیکون پایین -->
+        </button>
     </div>
 
     <script>
@@ -312,7 +329,7 @@
 
         startButton.addEventListener('click', startGame);
 
-        let time = 300; // 5 دقیقه (300 ثانیه)
+        let time = 300-{{tetris_session.duration}}; // 5 دقیقه (300 ثانیه)
         let timerInterval = setInterval(updateTimer, 1000);
 
         function updateTimer() {
@@ -398,15 +415,22 @@
         return cookieValue;
     }
     
-    // فراخوانی تابع ارسال داده‌ها در پایان بازی
+    
+    let isGameOver = false;
+
     function gameOver() {
+        
+    
         if (currentTetromino.some(index => gameGrid.children[currentPosition + index].classList.contains('taken'))) {
             scoreDisplay.innerHTML = 'end';
             clearInterval(timerId);
             clearInterval(timerInterval);
     
+            if (isGameOver) return;
             // ارسال داده‌ها به سرور
             sendGameData(score, time);
+    
+            isGameOver = true;
         }
     }
     </script>

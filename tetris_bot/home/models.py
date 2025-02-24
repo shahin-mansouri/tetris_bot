@@ -1,6 +1,7 @@
 from django.db import models
 from accounts.models import TelegramUser
 from django.utils.timezone import now
+from datetime import timedelta
 
 
 class Coin(models.Model):
@@ -15,4 +16,11 @@ class Coin(models.Model):
     def is_valid(self):
         if self.next_day_time is None:
             return True
+
+        if now() > self.next_day_time + timedelta(days=1):
+            self.day = 1
+            self.save()  # تغییرات را ذخیره کنید
+            return True
+        
+
         return now() > self.next_day_time
