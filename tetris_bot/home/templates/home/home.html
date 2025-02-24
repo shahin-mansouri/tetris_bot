@@ -49,7 +49,7 @@
         }
 </style>
 
-<body>
+<body style="background-color:rgb(13, 13, 13);">
     <!-- preloade -->
     <div class="preload preload-container">
         <div class="preload-logo" style="background-image: url('{% static 'home/images/znew/logo.PNG' %}')">
@@ -74,37 +74,15 @@
 </div>
 </div>
 <div class="element-sh">
-    <img class="element-sha" style="display: block; margin: 0 auto; width: 40%;" src="{% static 'home/images/znew/coin.PNG' %}" alt="">
-    <div class="sdfgjkl">
-        <div class="sdfgjkl12">
-            <img style="width: 30px;" src="{% static 'home/images/znew/danger.png' %}" alt="">
-            <!-- <h5>youtube</h5> -->
-                {% if youtube_subscription %}
-                    <!-- اگر کاربر در Google لاگین کرده باشد -->
-                    {% if youtube_subscription.is_sub %}
-                        <!-- اگر کاربر سابسکرایب کرده باشد -->
-                        <a href="https://www.youtube.com/channel/UCvwZz0LSe3CRMdOgh-Jil4g">
-                            <h5>youtube</h5>
-                        </a>
-                    {% else %}
-                        <!-- اگر کاربر سابسکرایب نکرده باشد -->
-                        <a href="{% url 'check_subscription_status' %}" target="_blank">
-                            <h5>youtube</h5>
-                        </a>
-                    {% endif %}
-                {% else %}
-                    <!-- اگر کاربر در Google لاگین نکرده باشد -->
-                    <a href="{% url 'login_with_google' %}">
-                        <h5>youtube</h5>
-                    </a>
-                {% endif %}
-
-        </div>
-        <div class="sdfgjkl1">
-            <img style="width: 30px;" src="{% static 'home/images/znew/danger.png' %}" alt="">
-            <h5>Twitter</h5>
-        </div>
+    <img class="element-sha" src="{% static 'home/images/znew/coin.png' %}" alt="">
+    <br>
+    <img class="element-shaa" src="{% static 'home/images/znew/award-reward.png' %}" alt="">
+    <br>
+    <div class="sdfgjkl12">
+        <img style="width: 30px;" src="{% static 'home/images/znew/youtube.png' %}" alt="">
+        <h6>10.000 to subscribe youtube</h6>
     </div>
+</di>
 <p style="text-align: center;">
     Your Balance:
 <p>
@@ -113,7 +91,7 @@
     margin-top: 50px; 
     text-align: center; 
     font-family: 'Arial', sans-serif; 
-    color: #FFD700; 
+    color: #9945FF; 
     text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
     letter-spacing: 2px; 
     font-weight: bold;
@@ -428,8 +406,8 @@
                                             {% endif %}
                                                 <a href="#" class="noti-item bg-menuDark">
                                                     <div class="pb-8 line-bt d-flex">
-                                                        <p class="text-button fw-6">{{ notification.notification.description }}</p>
                                                         <i class="dot-lg bg-primary"></i>
+                                                        <p style="text-align: center;" class="text-button fw-6">{{ notification.notification.description }}</p>
                                                     </div>
                                                     <span class="d-block mt-8">
                                                         <time class="notification-time" datetime="{{ notification.timestamp|date:'c' }}">
@@ -494,52 +472,6 @@
                             </div>
                         </div>
                     </div>
-<!-- noti popup -->
-
-{% if create %}
-    
-<div class="modal fade modalCenter" id="modalNoti">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content modal-sm">
-            <div class="p-16 line-bt text-center">
-                <h4>“Cointex” Would Like To Send You Notifications</h4>
-                <p class="mt-8 text-large">Notifications may include alerts, sounds, and icon badges. These can be configured in Settings.</p>
-            </div>
-            <div class="grid-2">
-                <a href="#" class="line-r text-center text-button fw-6 p-10 text-secondary btn-hide-modal" data-bs-dismiss="modal">Don’t Allow</a>
-                <a href="#" class="text-center text-button fw-6 p-10 text-primary btn-hide-modal" data-bs-toggle="modal" data-bs-target="#notiPrivacy">Allow</a>
-            </div>
-        </div>
-    </div>
-</div>
-    
-
-<!-- noti popup 2-->
-<div class="modal fade modalCenter" id="notiPrivacy">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content p-20">
-            <div class="heading">
-                <h3>Privacy</h3>
-                <div class="mt-4 text-small">
-                    <p>A mobile app privacy policy is a legal statement that must be clear, conspicuous, and consented to by all users. It must disclose how a mobile app gathers, stores, and uses the personally identifiable information it collects from its users.</p>
-                    <p>A mobile privacy app is developed and presented to users so that mobile app developers stay compliant with state, federal, and international laws. As a result, they fulfill the legal requirement to safeguard user privacy while protecting the company itself from legal challenges.</p>
-                </div>
-                <h3 class="mt-12">Authorized Users</h3>
-                <p class="mt-4 text-small">
-                    A mobile app privacy policy is a legal statement that must be clear, conspicuous, and consented to by all users. It must disclose how a mobile app gathers, stores, and uses the personally identifiable information it collects from its users.
-                </p>
-                <div class="cb-noti mt-12">
-                    <input type="checkbox" class="tf-checkbox" id="cb-ip"> 
-                    <label for="cb-ip">I agree to the Term of service and Privacy policy</label>
-                </div>
-            </div>
-            <div class="mt-20">
-                <a href="#" class="tf-btn md primary" data-bs-dismiss="modal">I Accept</a>
-            </div>
-        </div>
-    </div>
-</div>
-{% endif %}
 
 <script>
 // دریافت CSRF توکن برای ارسال درخواست POST
