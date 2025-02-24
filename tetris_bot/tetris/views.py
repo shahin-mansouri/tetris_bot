@@ -11,7 +11,11 @@ def tetris_play(request):
     user = request.user
 
     tetris_session = TetrisPlay.objects.filter(user=user, play_date=now().date()).first()
-    timer = 300 - tetris_session.duration
+    if tetris_session is not None:
+        timer = 300 - tetris_session.duration
+    else:
+        tetris_session = TetrisPlay.objects.create(user=user, play_date=now().date())
+        timer = 300 - tetris_session.duration
     timer = f"{timer // 60}:{timer % 60:02}"
 
     if tetris_session:

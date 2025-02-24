@@ -35,7 +35,7 @@ CSRF_TRUSTED_ORIGINS = ['https://app.tetragametetris.com']
 INSTALLED_APPS = [
     'corsheaders',
     'youtube_auth.apps.YoutubeAuthConfig',
-    'x_auth.apps.XAuthConfig',
+    # 'x_auth.apps.XAuthConfig',
     'notifications.apps.NotificationsConfig',
     'awards.apps.AwardsConfig',
     'verify_token.apps.VerifyTokenConfig',

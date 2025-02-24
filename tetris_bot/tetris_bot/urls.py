@@ -30,7 +30,7 @@ urlpatterns = [
     path('awards/', include('awards.urls')),
     path('notifications/', include('notifications.urls')),
     path('youtube-auth/', include('youtube_auth.urls')),
-    path('x-auth/', include('x_auth.urls')),
+    # path('x-auth/', include('x_auth.urls')),
 ]
 
 
